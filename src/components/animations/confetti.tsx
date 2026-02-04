@@ -39,7 +39,7 @@ export function Confetti({
   className,
 }: ConfettiProps) {
   const [pieces, setPieces] = useState<ConfettiPiece[]>([])
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout>(undefined)
 
   const generatePieces = useCallback(() => {
     return Array.from({ length: count }, (_, i) => ({
