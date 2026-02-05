@@ -358,6 +358,206 @@ export default function ProgramsPage() {
           </div>
         </section>
 
+        {/* Child Leadership Progression */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge variant="success" className="mb-4">
+                <Users className="w-3 h-3 mr-1" />
+                Growth Pathway
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Child to Child Leader Progression
+              </h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
+                Growth follows a defined pathway. No stage is skipped. Readiness is confirmed through consistency, not age.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  stage: "Stage 1",
+                  title: "Foundational Child",
+                  description: "Learns prayer, Scripture, and obedience. Establishes spiritual habits and disciplines.",
+                  color: "from-green-400 to-emerald-500",
+                  icon: "🌱",
+                },
+                {
+                  stage: "Stage 2",
+                  title: "Discipled Child",
+                  description: "Assists others, leads small prayer groups, and begins to take ownership of their faith.",
+                  color: "from-blue-400 to-indigo-500",
+                  icon: "🌿",
+                },
+                {
+                  stage: "Stage 3",
+                  title: "Qualified Child Leader",
+                  description: "Mentors, teaches, and oversees disciples. Prepared to lead and guide younger children.",
+                  color: "from-purple-400 to-violet-500",
+                  icon: "🌳",
+                },
+              ].map((stage, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.15 }}
+                >
+                  <Card className="h-full card-hover overflow-hidden">
+                    <div className={`h-2 bg-gradient-to-r ${stage.color}`} />
+                    <CardContent className="pt-6 text-center">
+                      <div className="text-4xl mb-4">{stage.icon}</div>
+                      <Badge variant="outline" className="mb-3">{stage.stage}</Badge>
+                      <h3 className="text-xl font-bold text-slate-800 mb-2">{stage.title}</h3>
+                      <p className="text-slate-600">{stage.description}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Core Disciplines */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge variant="default" className="mb-4">
+                <Shield className="w-3 h-3 mr-1" />
+                Foundational School Disciplines
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Core Disciplines
+              </h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
+                The Foundational School is mandatory for all children. It is the engine of spiritual formation.
+                Progress is tracked. Failure to maintain discipline results in intervention, not neglect.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
+              {[
+                { label: "Daily Personal Prayer", icon: "🙏" },
+                { label: "Scheduled Prayer Watches", icon: "⏰" },
+                { label: "Structured Bible Study", icon: "📖" },
+                { label: "Complete Bible Yearly", icon: "📚" },
+                { label: "Age-Appropriate Fasting", icon: "🕊️" },
+              ].map((discipline, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 text-center border border-amber-100"
+                  whileHover={{ y: -3 }}
+                >
+                  <span className="text-3xl block mb-2">{discipline.icon}</span>
+                  <p className="text-sm font-semibold text-slate-700">{discipline.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Worship & Music Training */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/30 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge variant="magic" className="mb-4">Worship & Music</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Music & Instrument Training
+              </h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
+                Music training exists as <strong>spiritual discipline, not performance</strong>.
+                Talent never overrides discipline.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="w-5 h-5 text-amber-500" />
+                    Training Includes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    {[
+                      "Instrument instruction",
+                      "Worship singing",
+                      "Song composition",
+                      "Worship theology",
+                      "Understanding spiritual sound",
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
+                        <span className="text-slate-600">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-amber-500" />
+                    Materials & Practice
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    {[
+                      "Manuals and practice books",
+                      "Sheet music and devotionals",
+                      "Commission-provided instruments (supervised)",
+                      "Assigned practice schedules",
+                      "Home practice materials",
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0" />
+                        <span className="text-slate-600">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Prayer Rhythms */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Prayer Rhythms & Governance
+              </h2>
+              <p className="text-slate-600 max-w-xl mx-auto">
+                No program runs without prayer. The Commission operates on disciplined rhythms.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {[
+                { label: "Weekly Leadership Prayer", period: "Weekly" },
+                { label: "Program-Specific Prayer", period: "Per Season" },
+                { label: "90-Day Prayer Cycles", period: "Quarterly" },
+                { label: "Leadership Reviews", period: "Every 3 Months" },
+              ].map((rhythm, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-4 text-center border border-purple-100"
+                  whileHover={{ y: -3 }}
+                >
+                  <p className="text-sm font-bold text-slate-800 mb-1">{rhythm.label}</p>
+                  <p className="text-xs text-purple-600 font-medium">{rhythm.period}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-gradient-to-r from-amber-500 to-orange-500">
           <div className="container mx-auto px-4">

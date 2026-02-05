@@ -33,7 +33,7 @@ export function Footer() {
               </div>
               <div>
                 <h3 className="font-bold text-lg text-white leading-tight">
-                  The Chosen
+                  The Choosing
                 </h3>
                 <p className="text-xs text-amber-400 font-medium -mt-1">Generation</p>
               </div>
@@ -128,7 +128,7 @@ export function Footer() {
             <p className="flex items-center gap-1">
               Made with <Heart className="w-4 h-4 text-red-400" /> for His Kingdom
             </p>
-            <p>&copy; {new Date().getFullYear()} The Chosen Generation. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} The Choosing Generation. All rights reserved.</p>
           </div>
         </div>
       </div>

@@ -3,18 +3,21 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
-  Target,
-  Eye,
   Heart,
   BookOpen,
   Users,
   Award,
-  ChevronRight,
   Quote,
   Globe,
   Shield,
   HandHeart,
   Star,
+  Music,
+  Flame,
+  Church,
+  Baby,
+  Tv,
+  MapPin,
 } from "lucide-react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -22,53 +25,82 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { StaggerContainer, StaggerItem } from "@/components/animations/page-transition"
+import { StaggerContainer, StaggerItem, SlideIn } from "@/components/animations/page-transition"
 
 const coreValues = [
   {
     icon: BookOpen,
     title: "Scripture-Centered",
-    description: "Every teaching and activity is grounded in God's Word, ensuring biblical truth shapes young hearts.",
+    description: "Every teaching is grounded in God's Word. Children complete the entire Bible and are rooted in doctrine.",
   },
   {
     icon: Heart,
     title: "Love-Driven",
-    description: "We create an environment where every child feels loved, valued, and accepted as God's creation.",
+    description: "Every child is known, assigned, and supervised. We create an environment of love, correction, and truth.",
   },
   {
     icon: Users,
-    title: "Community-Focused",
-    description: "Building a family of believers where children learn to support and encourage one another.",
+    title: "Community & Family",
+    description: "Christianity is a family. Children grow together, grounded in prayer and godly relationships.",
   },
   {
-    icon: Award,
-    title: "Excellence in Service",
-    description: "We strive for excellence in everything we do as an offering to God and service to families.",
+    icon: Shield,
+    title: "Discipline & Order",
+    description: "Growth is enforced through structure. No growth is accidental, no authority unchecked, no discipline optional.",
   },
 ]
 
-const leadershipTeam = [
+const founderStoryTimeline = [
   {
-    name: "Egbodofo Joshua",
-    role: "Founder & Vision Lead",
-    initials: "EJ",
-    description: "Christian teacher, mentor, and discipleship leader with a passion for raising children rooted in Christ.",
+    icon: Baby,
+    period: "Early Childhood",
+    title: "The Legacy Program",
+    description: "Our founder's mother began a children's Bible study ministry called Legacy — filled with music, singing, teaching, and joy. Children gathered, songs were sung, and the Word of God was taught in ways children could understand.",
+  },
+  {
+    icon: Tv,
+    period: "Growing Up",
+    title: "National Television & Drama",
+    description: "By God's grace, Legacy grew. It was recorded, performed, and eventually aired on national television (NTA). Children acted, sang, played instruments, and learned about God through Bible-based dramas, faith-centered skits, and creative storytelling.",
+  },
+  {
+    icon: Heart,
+    period: "Teenage & University Years",
+    title: "A Lifelong Love for Children",
+    description: "Even when the recordings stopped, the love for children never left. Children naturally gathered — in homes, in church, in offices. This was not accidental. God was preparing something.",
+  },
+  {
+    icon: Flame,
+    period: "2019",
+    title: "A Turning Point",
+    description: "Before the pandemic, our founder returned to Nigeria and resumed Sunday school teaching. Children gathered to worship, pray, watch Christian movies, and sing through the night. Even during COVID-19 lockdowns, children kept coming.",
+  },
+  {
+    icon: Users,
+    period: "NYSC Year",
+    title: "NCCF & The Move of God",
+    description: "During NYSC, over 50 children and teenagers gathered regularly for prayers, Bible studies, and school teaching. Children prayed. Children understood Scripture. Children responded to God. The power of God working in children became unmistakably clear.",
+  },
+  {
+    icon: Church,
+    period: "Jos Ministry",
+    title: "Structured Children's Ministry",
+    description: "In Jos, attendance grew from 50 to over 100. A three-day children's camp with nearly 70 children produced testimonies of deeper love for God, clearer prayer lives, healings, miracles, and spiritual sensitivity.",
+  },
+  {
+    icon: Globe,
+    period: "2023 – Present",
+    title: "International Expansion",
+    description: "Children and teenage mentorship programs expanded to Senegal, including leadership transitions and discipleship for young people stepping into ministry roles.",
   },
 ]
 
 const milestones = [
   { year: "2018 – 2020", event: "Children gatherings at home and Sunday school ministry." },
   { year: "2021", event: "Structured children programs established in Delta State, Nigeria." },
-  { year: "2022 – 2024", event: "Children programs established and continued in Jos, Nigeria." },
+  { year: "2022 – 2024", event: "Children programs established and continued in Jos. Camp with 70+ children." },
   { year: "2023 – 2025", event: "Children and teenage mentorship programs in Senegal." },
   { year: "2026 – Present", event: "Expansion, refinement, and growth of The Choosing Generation." },
-]
-
-const whatWeRaise = [
-  "Knows God personally",
-  "Understands their identity in Christ",
-  "Walks in love, discipline, and truth",
-  "Learns to pray, lead, and stand firm in faith",
 ]
 
 export default function AboutPage() {
@@ -104,7 +136,12 @@ export default function AboutPage() {
                 We Exist to Raise a Generation That:
               </h2>
               <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                {whatWeRaise.map((item, index) => (
+                {[
+                  "Knows God personally",
+                  "Understands their identity in Christ",
+                  "Walks in love, discipline, and truth",
+                  "Learns to pray, lead, and stand firm in faith",
+                ].map((item, index) => (
                   <motion.div
                     key={index}
                     className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100"
@@ -120,6 +157,7 @@ export default function AboutPage() {
               </div>
               <p className="text-lg text-slate-600 mt-8">
                 We believe Christianity is not just a belief system — it is a <strong>family</strong>.
+                Children are not raised by emotion or preference, but by <strong>order</strong>.
               </p>
             </div>
           </div>
@@ -136,9 +174,6 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
                 Family in Christ
               </h2>
-              <p className="text-xl text-slate-600 mb-6">
-                At the heart of The Choosing Generation is one truth:
-              </p>
 
               <Card variant="glass" className="p-8 mb-8">
                 <div className="flex justify-center mb-6">
@@ -149,9 +184,10 @@ export default function AboutPage() {
                 </blockquote>
               </Card>
 
-              <p className="text-lg text-slate-600 mb-8">
-                Children are not meant to grow alone. They are meant to grow together, grounded in
-                Scripture, prayer, and godly relationships.
+              <p className="text-lg text-slate-600 mb-6">
+                This work exists to produce children who are <strong>prayer-rooted</strong>, deeply
+                grounded in Scripture, <strong>disciplined in conduct</strong>, trained in worship,
+                and capable of mentoring other children.
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
@@ -171,11 +207,6 @@ export default function AboutPage() {
                   </motion.div>
                 ))}
               </div>
-
-              <p className="text-lg text-slate-600 mt-8">
-                Every child who joins is welcomed into a safe spiritual family where <strong>love</strong>,{" "}
-                <strong>correction</strong>, <strong>encouragement</strong>, and <strong>truth</strong> work together.
-              </p>
             </div>
           </div>
         </section>
@@ -208,8 +239,77 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Founder's Story */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/30 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge variant="magic" className="mb-4">
+                <Flame className="w-3 h-3 mr-1" />
+                Our Story
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                How The Choosing Generation Began
+              </h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                The story did not begin with a website or a program. It began with family, faith, and obedience.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              {founderStoryTimeline.map((chapter, index) => (
+                <motion.div
+                  key={index}
+                  className="flex gap-4 md:gap-6 mb-8"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.08 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <chapter.icon className="w-6 h-6 text-white" />
+                    </div>
+                    {index < founderStoryTimeline.length - 1 && (
+                      <div className="w-0.5 h-full bg-amber-200 mt-2" />
+                    )}
+                  </div>
+                  <div className="pb-4">
+                    <span className="text-sm font-semibold text-amber-600">{chapter.period}</span>
+                    <h3 className="text-xl font-bold text-slate-800 mt-1 mb-2">{chapter.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{chapter.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <SlideIn direction="up" className="mt-8">
+              <Card variant="gradient" className="max-w-3xl mx-auto">
+                <CardContent className="pt-6 text-center">
+                  <Music className="w-10 h-10 text-amber-500 mx-auto mb-4" />
+                  <p className="text-lg text-slate-700 italic mb-4">
+                    &ldquo;Legacy, Legacy, Legacy… Legacy is the program to watch.&rdquo;
+                  </p>
+                  <p className="text-slate-600">
+                    What you see today as The Choosing Generation is not something new.
+                    It is a <strong>continuation</strong>, a <strong>stewardship</strong>, a{" "}
+                    <strong>vision passed down and refined</strong>. The vision God gave through a mother,
+                    is now being stepped fully into.
+                  </p>
+                </CardContent>
+              </Card>
+            </SlideIn>
+
+            <SlideIn direction="up" className="mt-8 text-center">
+              <p className="text-xl text-slate-700 font-medium max-w-2xl mx-auto">
+                When children are taught early, loved deeply, and guided rightly,
+                they become a generation that <strong>chooses God willingly</strong>.
+              </p>
+            </SlideIn>
+          </div>
+        </section>
+
         {/* Leadership Team */}
-        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <Badge variant="success" className="mb-4">Our Team</Badge>
@@ -222,40 +322,40 @@ export default function AboutPage() {
             </div>
 
             <div className="max-w-md mx-auto">
-              {leadershipTeam.map((leader, index) => (
-                <motion.div
-                  key={leader.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card className="text-center card-hover">
-                    <CardContent className="pt-6">
-                      <Avatar size="xl" className="mx-auto mb-4">
-                        <AvatarFallback className="text-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white">
-                          {leader.initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <h3 className="text-xl font-bold text-slate-800">{leader.name}</h3>
-                      <p className="text-amber-600 font-medium mb-2">{leader.role}</p>
-                      <p className="text-slate-600">{leader.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <Card className="text-center card-hover">
+                  <CardContent className="pt-6">
+                    <Avatar size="xl" className="mx-auto mb-4">
+                      <AvatarFallback className="text-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white">
+                        EJ
+                      </AvatarFallback>
+                    </Avatar>
+                    <h3 className="text-xl font-bold text-slate-800">Egbodofo Joshua</h3>
+                    <p className="text-amber-600 font-medium mb-2">Founder & Vision Lead</p>
+                    <p className="text-slate-600">
+                      Christian teacher, mentor, and discipleship leader with a passion for raising
+                      children rooted in Christ. Continuing the vision that began through the Legacy
+                      children&apos;s program.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
 
             <div className="text-center mt-8">
               <p className="text-slate-500 italic">
-                Additional leadership team members will be added here.
+                Additional leadership team members and leader photos will be added here.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Timeline */}
-        <section className="py-16 md:py-24 bg-white">
+        {/* Ministry Journey */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <Badge variant="magic" className="mb-4">
@@ -263,7 +363,7 @@ export default function AboutPage() {
                 2018 – Present
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                Ministry Journey
+                Ministry Timeline
               </h2>
             </div>
 
@@ -292,7 +392,7 @@ export default function AboutPage() {
         </section>
 
         {/* Where We Serve */}
-        <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/50 to-white">
+        <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
@@ -305,22 +405,22 @@ export default function AboutPage() {
                 {
                   flag: "🇳🇬",
                   location: "Delta State, Nigeria",
-                  description: "Children's meetings and discipleship programs.",
+                  description: "Children's meetings, discipleship programs, and the original Legacy ministry.",
                 },
                 {
                   flag: "🇳🇬",
                   location: "Jos, Nigeria",
-                  description: "Ongoing children programs and structured teaching.",
+                  description: "Structured programs with 100+ children. Three-day camps with testimonies of healings and transformation.",
                 },
                 {
                   flag: "🇸🇳",
                   location: "Senegal",
-                  description: "Children and teenage discipleship, including leadership mentorship.",
+                  description: "Children and teenage discipleship, including leadership mentorship and ministry transitions.",
                 },
               ].map((place, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white rounded-2xl p-6 text-center shadow-lg"
+                  className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 text-center shadow-lg border border-amber-100"
                   whileHover={{ y: -5 }}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -336,6 +436,34 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Transformation Stories placeholder */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/30 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <Badge variant="success" className="mb-4">
+                <Heart className="w-3 h-3 mr-1" />
+                Transformation Stories
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Every Story Is Real
+              </h2>
+              <p className="text-slate-600 max-w-xl mx-auto">
+                Stories shared by children, parents, and mentors — each reflecting growth,
+                healing, changed understanding, and renewed faith.
+              </p>
+            </div>
+            <div className="max-w-2xl mx-auto text-center">
+              <Card variant="glass" className="p-8">
+                <Award className="w-12 h-12 text-amber-400 mx-auto mb-4" />
+                <p className="text-slate-500 italic">
+                  Transformation stories are uploaded, edited, and approved by the ministry team.
+                  Stories will appear here as they are published.
+                </p>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-gradient-to-r from-amber-500 to-orange-500">
           <div className="container mx-auto px-4">
@@ -345,6 +473,7 @@ export default function AboutPage() {
               </h2>
               <p className="text-lg text-white/90 mb-8">
                 Become part of a community dedicated to raising children in the knowledge and love of God.
+                No growth is accidental. No discipline is optional.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="xl" variant="outline" className="bg-white text-amber-600 border-white hover:bg-amber-50" asChild>

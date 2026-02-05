@@ -33,7 +33,7 @@ export function Header() {
             </div>
             <div className="hidden sm:block">
               <h1 className="font-bold text-lg md:text-xl text-slate-800 leading-tight">
-                The Chosen
+                The Choosing
               </h1>
               <p className="text-xs text-amber-600 font-medium -mt-1">Generation</p>
             </div>
