@@ -12,110 +12,116 @@ import {
   Target,
   Award,
   Sparkles,
+  Heart,
+  AlertTriangle,
+  Shield,
 } from "lucide-react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const programs = [
   {
     id: "fs1",
     title: "Foundation School 1",
-    subtitle: "Building the Basics of Faith",
+    subtitle: "Family, Faith & Christian Foundations",
     duration: "2 Weeks",
-    schedule: "Saturday & Sunday, 9:00 AM - 12:00 PM",
-    ageGroup: "Ages 4-12",
-    passingScore: 60,
-    color: "from-green-400 to-emerald-500",
+    schedule: "Daily Classes, ~3 hours",
+    ageGroup: "Ages 5-18",
+    color: "from-amber-400 to-orange-500",
     icon: "🌱",
     description:
-      "The entry-level program where children establish their foundational understanding of prayer, worship, and Scripture. Perfect for first-timers or those new to structured Bible learning.",
-    objectives: [
-      "Learn basic prayer principles and develop a personal prayer life",
-      "Understand the importance of worship and praise",
-      "Begin reading and memorizing Scripture passages",
-      "Build friendships within the community of faith",
-      "Develop discipline and attentiveness in spiritual matters",
+      "This is the starting point for every child. Here, children are taught the foundational truths of Christianity with a special emphasis on Family in Christ, Belonging, Identity, Love and Responsibility.",
+    whatTheyLearn: [
+      "Who God is",
+      "Who Jesus Christ is",
+      "What it means to be a Christian",
+      "The basic beliefs of our faith",
+      "How Christians are called to live",
     ],
-    curriculum: [
-      { week: 1, topics: ["Introduction to Prayer", "Why We Pray", "Types of Prayer", "Prayer Practice Sessions"] },
-      { week: 2, topics: ["Introduction to Scripture", "Bible Stories", "Memory Verses", "Final Prayer Stretch (6 hours)"] },
+    emphasis: [
+      "Family in Christ",
+      "Belonging",
+      "Identity",
+      "Love and responsibility",
     ],
-    assessment: [
-      { category: "Attendance & Participation", weight: 30 },
-      { category: "Prayer Engagement", weight: 25 },
-      { category: "Bible Lessons", weight: 15 },
-      { category: "Attitude & Discipline", weight: 10 },
-      { category: "Final Prayer Stretch", weight: 20 },
+    keyLessons: [
+      "Christianity is not isolation",
+      "Faith grows in community",
+      "God places us in families to help us stand",
     ],
   },
   {
     id: "fs2",
     title: "Foundation School 2",
-    subtitle: "Deepening Understanding",
-    duration: "3 Weeks",
-    schedule: "Saturday & Sunday, 9:00 AM - 1:00 PM",
-    ageGroup: "Ages 6-12",
-    passingScore: 70,
+    subtitle: "Intimacy With God",
+    duration: "2 Weeks",
+    schedule: "Daily Classes, ~3 hours",
+    ageGroup: "Ages 5-18",
     color: "from-blue-400 to-indigo-500",
     icon: "📖",
     description:
-      "Building on Foundation School 1, this intermediate program takes children deeper into Bible study, spiritual disciplines, and personal devotion. Students develop stronger prayer habits and begin systematic Scripture reading.",
-    objectives: [
-      "Develop consistent Bible reading habits",
-      "Understand major Bible themes and stories",
-      "Practice longer prayer sessions with greater depth",
-      "Learn to journal spiritual reflections",
-      "Begin understanding God's character through Scripture",
+      "This level focuses on relationship, not religion. Children are taught what intimacy with God means, how it is developed, and what flows out of it. They also learn from biblical examples of people who walked closely with God.",
+    whatTheyLearn: [
+      "What intimacy with God means",
+      "How intimacy with God is developed",
+      "Prayer, obedience, and surrender",
+      "What flows out of intimacy with God",
+      "Biblical examples of close walk with God",
     ],
-    curriculum: [
-      { week: 1, topics: ["Advanced Prayer Techniques", "Intercession", "Warfare Prayers", "Prayer Journal Writing"] },
-      { week: 2, topics: ["Old Testament Overview", "Key Bible Characters", "Lessons from Patriarchs", "Scripture Memory"] },
-      { week: 3, topics: ["New Testament Foundations", "Life of Jesus", "Acts of the Apostles", "Final Prayer Stretch (12 hours)"] },
+    pitfalls: [
+      "Pride",
+      "Familiarity without obedience",
+      "Speaking without listening",
+      "Disobedience despite closeness",
     ],
-    assessment: [
-      { category: "Attendance & Participation", weight: 25 },
-      { category: "Prayer Engagement", weight: 25 },
-      { category: "Bible Study", weight: 20 },
-      { category: "Attitude & Teachability", weight: 10 },
-      { category: "Final Prayer Stretch", weight: 20 },
+    keyLessons: [
+      "Being close to God requires humility, reverence, and obedience",
     ],
   },
   {
-    id: "leadership",
-    title: "Leadership Training",
-    subtitle: "Developing Young Leaders",
+    id: "fs3",
+    title: "Foundation School 3",
+    subtitle: "Leadership, Authority & Territorial Intercession",
     duration: "2 Weeks",
-    schedule: "Saturday & Sunday, 9:00 AM - 2:00 PM",
-    ageGroup: "Ages 8-14",
-    passingScore: 80,
-    color: "from-purple-400 to-pink-500",
+    schedule: "Daily Classes, ~3 hours",
+    ageGroup: "Ages 5-18",
+    color: "from-purple-400 to-violet-500",
     icon: "👑",
     description:
-      "The advanced program for children who have completed Foundation School 2 with excellence. This intensive training prepares young believers to serve, lead, and mentor others in their faith journey.",
-    objectives: [
-      "Develop leadership and mentoring skills",
-      "Learn to teach and explain Scripture to others",
-      "Practice facilitating small group discussions",
-      "Build accountability and character",
-      "Prepare for service within the ministry",
+      "This level prepares children to stand as leaders. They are taught leadership according to God's Word, influence and responsibility, authority in Christ, identity and placement, intercessory prayer, and spiritual responsibility over territories.",
+    whatTheyLearn: [
+      "Leadership according to God's Word",
+      "Influence and responsibility",
+      "Authority in Christ",
+      "Identity and placement",
+      "Intercessory prayer",
+      "Spiritual responsibility over territories",
     ],
-    curriculum: [
-      { week: 1, topics: ["Servant Leadership", "Character Building", "Teaching Basics", "Mentoring Skills"] },
-      { week: 2, topics: ["Practical Ministry", "Working with Younger Children", "Responsibility & Accountability", "Final Prayer Stretch (12 hours)"] },
-    ],
-    assessment: [
-      { category: "Attendance & Reliability", weight: 25 },
-      { category: "Prayer Capacity & Leadership", weight: 30 },
-      { category: "Bible Understanding & Teaching", weight: 15 },
-      { category: "Character & Accountability", weight: 10 },
-      { category: "Final Prayer Stretch", weight: 20 },
+    keyLessons: [
+      "How prayer shapes environments",
+      "How leadership flows from character",
+      "How God uses people to impact nations, families, and communities",
     ],
   },
+]
+
+const programStructure = [
+  { icon: Calendar, label: "Duration", value: "2 weeks per foundation school" },
+  { icon: BookOpen, label: "Schedule", value: "Daily classes" },
+  { icon: Clock, label: "Daily Time", value: "Approximately 3 hours" },
+  { icon: Target, label: "Bible Goal", value: "Complete New Testament in one month" },
+]
+
+const learningIncludes = [
+  "Teaching sessions",
+  "Guided prayer",
+  "Group discussions",
+  "Bible reading",
+  "Recorded messages on healing, miracles, authority in Christ",
 ]
 
 export default function ProgramsPage() {
@@ -131,14 +137,14 @@ export default function ProgramsPage() {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="magic" className="mb-6">
                 <Sparkles className="w-3 h-3 mr-1" />
-                Our Programs
+                Ages 5 – 18
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
-                A Progressive Journey of Faith
+                Our Foundation Schools
               </h1>
               <p className="text-lg text-slate-600 mb-8">
-                Three carefully designed levels that take children from foundational understanding
-                to confident spiritual leadership, each building upon the previous.
+                A structured journey of spiritual growth and discipleship through three progressive levels,
+                each building upon the previous.
               </p>
             </div>
 
@@ -163,6 +169,43 @@ export default function ProgramsPage() {
                   </motion.div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Program Structure */}
+        <section className="py-12 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-slate-800 text-center mb-8">
+              Program Structure & Intensity
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {programStructure.map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 text-center"
+                  whileHover={{ y: -3 }}
+                >
+                  <item.icon className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+                  <p className="text-xs text-slate-500 mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-slate-800">{item.value}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="max-w-2xl mx-auto mt-8">
+              <h3 className="text-lg font-semibold text-slate-800 text-center mb-4">Learning Includes:</h3>
+              <div className="flex flex-wrap justify-center gap-2">
+                {learningIncludes.map((item, index) => (
+                  <span key={index} className="px-4 py-2 bg-slate-100 rounded-full text-sm text-slate-600">
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <p className="text-center text-slate-500 mt-4 text-sm">
+                Advanced students continue with New Testament + Old Testament.
+                Leadership students receive additional mentoring.
+              </p>
             </div>
           </div>
         </section>
@@ -217,10 +260,6 @@ export default function ProgramsPage() {
                               <Users className="w-3 h-3" />
                               {program.ageGroup}
                             </Badge>
-                            <Badge variant="gold" className="flex items-center gap-1">
-                              <Target className="w-3 h-3" />
-                              {program.passingScore}% to Pass
-                            </Badge>
                           </div>
                         </div>
                         <div className="mt-4 p-3 bg-slate-50 rounded-lg">
@@ -234,74 +273,79 @@ export default function ProgramsPage() {
                     </Card>
 
                     <div className="grid md:grid-cols-2 gap-6">
-                      {/* Objectives */}
+                      {/* What They Learn */}
                       <Card>
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <BookOpen className="w-5 h-5 text-amber-500" />
-                            Learning Objectives
+                            What Children Learn
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <ul className="space-y-3">
-                            {program.objectives.map((objective, index) => (
+                            {program.whatTheyLearn.map((item, index) => (
                               <li key={index} className="flex items-start gap-3">
                                 <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                <span className="text-slate-600 text-sm">{objective}</span>
+                                <span className="text-slate-600 text-sm">{item}</span>
                               </li>
                             ))}
                           </ul>
                         </CardContent>
                       </Card>
 
-                      {/* Assessment */}
+                      {/* Emphasis or Pitfalls */}
                       <Card>
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
-                            <Award className="w-5 h-5 text-amber-500" />
-                            Assessment Criteria
+                            {program.id === "fs2" ? (
+                              <>
+                                <AlertTriangle className="w-5 h-5 text-orange-500" />
+                                Pitfalls of Intimacy
+                              </>
+                            ) : program.id === "fs1" ? (
+                              <>
+                                <Heart className="w-5 h-5 text-red-500" />
+                                Special Emphasis
+                              </>
+                            ) : (
+                              <>
+                                <Shield className="w-5 h-5 text-purple-500" />
+                                Leadership Focus
+                              </>
+                            )}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="space-y-4">
-                            {program.assessment.map((item) => (
-                              <div key={item.category}>
-                                <div className="flex justify-between text-sm mb-1">
-                                  <span className="text-slate-600">{item.category}</span>
-                                  <span className="font-medium text-slate-800">{item.weight}%</span>
-                                </div>
-                                <Progress value={item.weight} className="h-2" />
-                              </div>
+                          <ul className="space-y-3">
+                            {(program.pitfalls || program.emphasis || program.whatTheyLearn.slice(0, 4)).map((item, index) => (
+                              <li key={index} className="flex items-start gap-3">
+                                {program.id === "fs2" ? (
+                                  <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
+                                ) : (
+                                  <CheckCircle2 className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                                )}
+                                <span className="text-slate-600 text-sm">{item}</span>
+                              </li>
                             ))}
-                          </div>
+                          </ul>
                         </CardContent>
                       </Card>
                     </div>
 
-                    {/* Curriculum */}
+                    {/* Key Lessons */}
                     <Card className="mt-6">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <Calendar className="w-5 h-5 text-amber-500" />
-                          Curriculum Overview
+                          <Award className="w-5 h-5 text-amber-500" />
+                          Key Lessons
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="space-y-4">
-                          {program.curriculum.map((week, index) => (
-                            <div key={index} className="border border-slate-100 rounded-xl p-4">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Badge variant={index === program.curriculum.length - 1 ? "magic" : "default"}>
-                                  Week {week.week}
-                                </Badge>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                {week.topics.map((topic, i) => (
-                                  <span key={i} className="px-3 py-1 bg-slate-50 rounded-lg text-sm text-slate-600">
-                                    {topic}
-                                  </span>
-                                ))}
-                              </div>
+                        <div className="space-y-3">
+                          {program.keyLessons.map((lesson, index) => (
+                            <div key={index} className="flex items-center gap-3 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl">
+                              <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
+                              <span className="text-slate-700 font-medium">{lesson}</span>
                             </div>
                           ))}
                         </div>
@@ -322,13 +366,13 @@ export default function ProgramsPage() {
                 Ready to Begin the Journey?
               </h2>
               <p className="text-lg text-white/90 mb-8">
-                Register your child today and watch them grow in faith, knowledge, and character.
+                Enroll your child today and watch them grow in faith, knowledge, and character.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="xl" variant="outline" className="bg-white text-amber-600 border-white hover:bg-amber-50" asChild>
                   <Link href="/signup">
-                    Register Now
-                    <ChevronRight className="w-5 h-5 ml-1" />
+                    <Heart className="w-5 h-5 mr-2" />
+                    Enroll Your Child (Ages 5–18)
                   </Link>
                 </Button>
                 <Button size="xl" variant="ghost" className="text-white border-white/30 hover:bg-white/10" asChild>

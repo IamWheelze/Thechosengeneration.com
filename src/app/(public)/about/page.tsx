@@ -11,6 +11,10 @@ import {
   Award,
   ChevronRight,
   Quote,
+  Globe,
+  Shield,
+  HandHeart,
+  Star,
 } from "lucide-react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -45,39 +49,26 @@ const coreValues = [
 
 const leadershipTeam = [
   {
-    name: "Pastor James Okonkwo",
-    role: "Vision & Quality Lead",
-    initials: "JO",
-    description: "Over 15 years of experience in children's ministry and pastoral care.",
-  },
-  {
-    name: "Sister Grace Adeyemi",
-    role: "Administrator",
-    initials: "GA",
-    description: "Manages operations, scheduling, and ensures smooth program delivery.",
-  },
-  {
-    name: "Brother Daniel Mensah",
-    role: "Teacher Coordinator",
-    initials: "DM",
-    description: "Oversees teacher training, curriculum development, and class assignments.",
-  },
-  {
-    name: "Sister Faith Nwachukwu",
-    role: "Music & Worship Lead",
-    initials: "FN",
-    description: "Leads worship sessions and coordinates instrument training programs.",
+    name: "Egbodofo Joshua",
+    role: "Founder & Vision Lead",
+    initials: "EJ",
+    description: "Christian teacher, mentor, and discipleship leader with a passion for raising children rooted in Christ.",
   },
 ]
 
 const milestones = [
-  { year: "2018", event: "Ministry founded with 20 children" },
-  { year: "2019", event: "First Foundation School graduation" },
-  { year: "2020", event: "Virtual programs launched during pandemic" },
-  { year: "2021", event: "Leadership Training program introduced" },
-  { year: "2022", event: "Reached 200+ active children" },
-  { year: "2023", event: "Expanded to multiple branches" },
-  { year: "2024", event: "Digital platform launched" },
+  { year: "2018 – 2020", event: "Children gatherings at home and Sunday school ministry." },
+  { year: "2021", event: "Structured children programs established in Delta State, Nigeria." },
+  { year: "2022 – 2024", event: "Children programs established and continued in Jos, Nigeria." },
+  { year: "2023 – 2025", event: "Children and teenage mentorship programs in Senegal." },
+  { year: "2026 – Present", event: "Expansion, refinement, and growth of The Choosing Generation." },
+]
+
+const whatWeRaise = [
+  "Knows God personally",
+  "Understands their identity in Christ",
+  "Walks in love, discipline, and truth",
+  "Learns to pray, lead, and stand firm in faith",
 ]
 
 export default function AboutPage() {
@@ -91,90 +82,100 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-pattern-stars opacity-20" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <Badge variant="magic" className="mb-6">About Us</Badge>
+              <Badge variant="magic" className="mb-6">Who We Are</Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
-                Raising Children to Know and Love God
+                The Choosing Generation
               </h1>
-              <p className="text-lg text-slate-600 mb-8">
-                The Chosen Generation is a children&apos;s ministry dedicated to spiritual formation,
-                discipleship, and nurturing the next generation of believers.
+              <p className="text-lg text-slate-600 mb-4">
+                A Christian discipleship ministry for children and teenagers aged 5 to 18.
+              </p>
+              <p className="text-xl text-amber-600 font-medium">
+                Raising a generation that knows God, walks in truth, and leads with Christ.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Mission & Vision Section */}
+        {/* What We Raise Section */}
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <Card variant="gradient" className="h-full">
-                  <CardContent className="pt-6">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-6">
-                      <Target className="w-7 h-7 text-white" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Our Mission</h2>
-                    <p className="text-slate-600 leading-relaxed">
-                      To raise children who genuinely know God, deeply love His Word, and consistently
-                      walk in His ways through intentional discipleship, structured spiritual formation,
-                      and loving community support.
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <Card variant="gradient" className="h-full">
-                  <CardContent className="pt-6">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mb-6">
-                      <Eye className="w-7 h-7 text-white" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Our Vision</h2>
-                    <p className="text-slate-600 leading-relaxed">
-                      To see a generation of young people who are firmly rooted in faith, equipped
-                      to lead in their communities, and passionate about sharing God&apos;s love with
-                      the world around them.
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+            <div className="max-w-4xl mx-auto text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+                We Exist to Raise a Generation That:
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                {whatWeRaise.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Star className="w-5 h-5 text-amber-500 flex-shrink-0" />
+                    <span className="text-slate-700 font-medium">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+              <p className="text-lg text-slate-600 mt-8">
+                We believe Christianity is not just a belief system — it is a <strong>family</strong>.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Philosophy Section */}
+        {/* Core Belief Section */}
         <section className="py-16 md:py-24 bg-amber-50/50">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <Badge variant="secondary" className="mb-4">Our Approach</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                Formation Over Entertainment
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge variant="secondary" className="mb-6">
+                <Users className="w-3 h-3 mr-1" />
+                Our Core Belief
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+                Family in Christ
               </h2>
-              <p className="text-slate-600">
-                We believe that true spiritual growth comes through intentional discipleship,
-                not through mere entertainment or activity.
+              <p className="text-xl text-slate-600 mb-6">
+                At the heart of The Choosing Generation is one truth:
               </p>
-            </div>
 
-            <div className="max-w-4xl mx-auto">
-              <Card variant="glass" className="p-8">
+              <Card variant="glass" className="p-8 mb-8">
                 <div className="flex justify-center mb-6">
                   <Quote className="w-12 h-12 text-amber-400" />
                 </div>
-                <blockquote className="text-xl md:text-2xl text-center text-slate-700 italic leading-relaxed mb-6">
-                  &ldquo;Train up a child in the way he should go: and when he is old,
-                  he will not depart from it.&rdquo;
+                <blockquote className="text-xl md:text-2xl text-center text-amber-600 italic leading-relaxed mb-4 font-semibold">
+                  &ldquo;If you are not rooted in a godly family, you will struggle to grow well.&rdquo;
                 </blockquote>
-                <p className="text-center text-slate-500 font-medium">Proverbs 22:6</p>
               </Card>
+
+              <p className="text-lg text-slate-600 mb-8">
+                Children are not meant to grow alone. They are meant to grow together, grounded in
+                Scripture, prayer, and godly relationships.
+              </p>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                {[
+                  { icon: BookOpen, text: "We learn together" },
+                  { icon: HandHeart, text: "We pray together" },
+                  { icon: Star, text: "We grow together" },
+                  { icon: Shield, text: "We carry one another" },
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-4 rounded-xl bg-white border border-amber-100 shadow-sm"
+                    whileHover={{ y: -3 }}
+                  >
+                    <item.icon className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+                    <p className="font-medium text-slate-700 text-sm">{item.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <p className="text-lg text-slate-600 mt-8">
+                Every child who joins is welcomed into a safe spiritual family where <strong>love</strong>,{" "}
+                <strong>correction</strong>, <strong>encouragement</strong>, and <strong>truth</strong> work together.
+              </p>
             </div>
           </div>
         </section>
@@ -216,11 +217,11 @@ export default function AboutPage() {
                 Leadership Team
               </h2>
               <p className="text-slate-600 max-w-2xl mx-auto">
-                Dedicated servants who are passionate about children&apos;s spiritual development.
+                Each leader serves with dedication to teaching, prayer, and care.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="max-w-md mx-auto">
               {leadershipTeam.map((leader, index) => (
                 <motion.div
                   key={leader.name}
@@ -229,18 +230,26 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="h-full text-center card-hover">
+                  <Card className="text-center card-hover">
                     <CardContent className="pt-6">
                       <Avatar size="xl" className="mx-auto mb-4">
-                        <AvatarFallback className="text-xl">{leader.initials}</AvatarFallback>
+                        <AvatarFallback className="text-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white">
+                          {leader.initials}
+                        </AvatarFallback>
                       </Avatar>
-                      <h3 className="font-bold text-slate-800">{leader.name}</h3>
-                      <p className="text-sm text-amber-600 font-medium mb-2">{leader.role}</p>
-                      <p className="text-sm text-slate-500">{leader.description}</p>
+                      <h3 className="text-xl font-bold text-slate-800">{leader.name}</h3>
+                      <p className="text-amber-600 font-medium mb-2">{leader.role}</p>
+                      <p className="text-slate-600">{leader.description}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="text-center mt-8">
+              <p className="text-slate-500 italic">
+                Additional leadership team members will be added here.
+              </p>
             </div>
           </div>
         </section>
@@ -249,36 +258,80 @@ export default function AboutPage() {
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <Badge variant="magic" className="mb-4">Our Journey</Badge>
+              <Badge variant="magic" className="mb-4">
+                <Globe className="w-3 h-3 mr-1" />
+                2018 – Present
+              </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                Ministry Milestones
+                Ministry Journey
               </h2>
             </div>
 
             <div className="max-w-3xl mx-auto">
-              <div className="relative">
-                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 to-purple-400" />
-                {milestones.map((milestone, index) => (
-                  <motion.div
-                    key={milestone.year}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`relative flex items-center mb-8 ${
-                      index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                    }`}
-                  >
-                    <div className="absolute left-4 md:left-1/2 w-4 h-4 -translate-x-1/2 rounded-full bg-amber-400 border-4 border-white shadow-md" />
-                    <div className={`ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                      <div className="bg-white rounded-xl p-4 shadow-md border border-slate-100">
-                        <span className="text-amber-600 font-bold">{milestone.year}</span>
-                        <p className="text-slate-600">{milestone.event}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={index}
+                  className="flex gap-4 md:gap-6 mb-6"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex flex-col items-center">
+                    <div className="w-4 h-4 rounded-full bg-amber-500 flex-shrink-0" />
+                    {index < milestones.length - 1 && <div className="w-0.5 h-full bg-amber-200 mt-1" />}
+                  </div>
+                  <div className="pb-6">
+                    <span className="text-sm font-semibold text-amber-600">{milestone.year}</span>
+                    <p className="text-slate-700 mt-1">{milestone.event}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Where We Serve */}
+        <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                Where We Have Served
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {[
+                {
+                  flag: "🇳🇬",
+                  location: "Delta State, Nigeria",
+                  description: "Children's meetings and discipleship programs.",
+                },
+                {
+                  flag: "🇳🇬",
+                  location: "Jos, Nigeria",
+                  description: "Ongoing children programs and structured teaching.",
+                },
+                {
+                  flag: "🇸🇳",
+                  location: "Senegal",
+                  description: "Children and teenage discipleship, including leadership mentorship.",
+                },
+              ].map((place, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-white rounded-2xl p-6 text-center shadow-lg"
+                  whileHover={{ y: -5 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="text-5xl mb-4 block">{place.flag}</span>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">{place.location}</h3>
+                  <p className="text-slate-600">{place.description}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -296,13 +349,13 @@ export default function AboutPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="xl" variant="outline" className="bg-white text-amber-600 border-white hover:bg-amber-50" asChild>
                   <Link href="/signup">
-                    Register Your Child
-                    <ChevronRight className="w-5 h-5 ml-1" />
+                    <Heart className="w-5 h-5 mr-2" />
+                    Enroll Your Child (Ages 5–18)
                   </Link>
                 </Button>
                 <Button size="xl" variant="ghost" className="text-white border-white/30 hover:bg-white/10" asChild>
                   <Link href="/contact">
-                    Contact Us
+                    Apply as Teacher/Mentor
                   </Link>
                 </Button>
               </div>
