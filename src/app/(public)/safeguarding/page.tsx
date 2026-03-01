@@ -243,27 +243,27 @@ export default function SafeguardingPage() {
                     <div className="space-y-4">
                       <div className="p-4 bg-green-50 rounded-xl border border-green-100">
                         <h4 className="font-semibold text-slate-800 mb-2">Safeguarding Lead</h4>
-                        <p className="text-slate-600 mb-3">Pastor James Okonkwo</p>
+                        <p className="text-slate-600 mb-3">Contact name to be provided</p>
                         <div className="space-y-2">
-                          <a href="tel:+1234567890" className="flex items-center gap-2 text-green-600 hover:text-green-700">
+                          <span className="flex items-center gap-2 text-green-600">
                             <Phone className="w-4 h-4" />
-                            +1 (234) 567-8900
-                          </a>
-                          <a href="mailto:safeguarding@thechosengeneration.org" className="flex items-center gap-2 text-green-600 hover:text-green-700">
+                            Phone number to be provided
+                          </span>
+                          <span className="flex items-center gap-2 text-green-600">
                             <Mail className="w-4 h-4" />
-                            safeguarding@thechosengeneration.org
-                          </a>
+                            Email to be provided
+                          </span>
                         </div>
                       </div>
 
                       <div className="p-4 bg-amber-50 rounded-xl border border-amber-100">
                         <h4 className="font-semibold text-slate-800 mb-2">Deputy Safeguarding Lead</h4>
-                        <p className="text-slate-600 mb-3">Sister Grace Adeyemi</p>
+                        <p className="text-slate-600 mb-3">Contact name to be provided</p>
                         <div className="space-y-2">
-                          <a href="tel:+1234567891" className="flex items-center gap-2 text-amber-600 hover:text-amber-700">
+                          <span className="flex items-center gap-2 text-amber-600">
                             <Phone className="w-4 h-4" />
-                            +1 (234) 567-8901
-                          </a>
+                            Phone number to be provided
+                          </span>
                         </div>
                       </div>
 
