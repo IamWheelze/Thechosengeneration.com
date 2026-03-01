@@ -33,25 +33,25 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    details: ["+1 (234) 567-8900", "+1 (234) 567-8901"],
+    details: ["[Your phone number]", "[Your alternate phone]"],
     color: "from-amber-400 to-orange-500",
   },
   {
     icon: Mail,
     title: "Email",
-    details: ["info@thechosengeneration.org", "admin@thechosengeneration.org"],
+    details: ["[Your email address]", "[Your alternate email]"],
     color: "from-blue-400 to-indigo-500",
   },
   {
     icon: MapPin,
     title: "Location",
-    details: ["123 Faith Avenue", "City, Country 12345"],
+    details: ["[Your street address]", "[City, Country, Postal Code]"],
     color: "from-green-400 to-emerald-500",
   },
   {
     icon: Clock,
     title: "Office Hours",
-    details: ["Monday - Friday: 9 AM - 5 PM", "Saturday: 9 AM - 1 PM"],
+    details: ["[Your weekday hours]", "[Your weekend hours]"],
     color: "from-purple-400 to-pink-500",
   },
 ]
@@ -242,8 +242,8 @@ export default function ContactPage() {
                       <MapPin className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                       <h3 className="font-bold text-slate-800 mb-2">Find Us</h3>
                       <p className="text-slate-600 text-sm">
-                        123 Faith Avenue<br />
-                        City, Country 12345
+                        [Your street address]<br />
+                        [City, Country, Postal Code]
                       </p>
                       <Button className="mt-4" variant="outline" asChild>
                         <a

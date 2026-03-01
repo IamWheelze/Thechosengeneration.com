@@ -106,15 +106,15 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-slate-400 text-sm">
                 <MapPin className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
-                <span>123 Faith Avenue, City, Country</span>
+                <span>[Your address here]</span>
               </li>
               <li className="flex items-center gap-3 text-slate-400 text-sm">
                 <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>+1 (234) 567-8900</span>
+                <span>[Your phone number]</span>
               </li>
               <li className="flex items-center gap-3 text-slate-400 text-sm">
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>info@thechosengeneration.org</span>
+                <span>[Your email address]</span>
               </li>
             </ul>
           </div>
