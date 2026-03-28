@@ -2,23 +2,22 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import {
   UserPlus,
   User,
   Mail,
-  Lock,
   Phone,
   Sparkles,
   ArrowRight,
   ArrowLeft,
-  Eye,
-  EyeOff,
   CheckCircle2,
   Baby,
   Calendar,
   School,
+  Key,
+  Copy,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -34,29 +33,31 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Progress } from "@/components/ui/progress"
-import { createClient } from "@/lib/supabase/client"
 
 const steps = [
   { id: 1, title: "Parent Info", icon: User },
   { id: 2, title: "Child Info", icon: Baby },
-  { id: 3, title: "Confirm", icon: CheckCircle2 },
+  { id: 3, title: "Complete", icon: CheckCircle2 },
 ]
 
+// Generate unique 4-digit PIN
+function generatePIN(): string {
+  return Math.floor(1000 + Math.random() * 9000).toString()
+}
+
 export default function SignupPage() {
-  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+  const [generatedPIN, setGeneratedPIN] = useState("")
+  const [copied, setCopied] = useState(false)
 
-  // Parent form state
+  // Parent form state (simplified - no password)
   const [parentData, setParentData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
     churchName: "",
   })
 
@@ -83,16 +84,8 @@ export default function SignupPage() {
   }
 
   const validateStep1 = () => {
-    if (!parentData.firstName || !parentData.lastName || !parentData.email || !parentData.password) {
+    if (!parentData.firstName || !parentData.lastName || !parentData.email) {
       setError("Please fill in all required fields")
-      return false
-    }
-    if (parentData.password.length < 8) {
-      setError("Password must be at least 8 characters")
-      return false
-    }
-    if (parentData.password !== parentData.confirmPassword) {
-      setError("Passwords do not match")
       return false
     }
     setError("")
@@ -112,7 +105,7 @@ export default function SignupPage() {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2)
     } else if (currentStep === 2 && validateStep2()) {
-      setCurrentStep(3)
+      handleSubmit()
     }
   }
 
@@ -121,41 +114,65 @@ export default function SignupPage() {
     setCurrentStep(currentStep - 1)
   }
 
+  const copyPIN = () => {
+    navigator.clipboard.writeText(generatedPIN)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   const handleSubmit = async () => {
     setIsLoading(true)
     setError("")
 
     try {
-      const supabase = createClient()
+      // Generate unique PIN for this child
+      const pin = generatePIN()
 
-      // Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: parentData.email,
-        password: parentData.password,
-        options: {
-          data: {
-            name: `${parentData.firstName} ${parentData.lastName}`,
-            phone: parentData.phone,
-          },
-        },
-      })
+      // Prepare data for Google Sheets
+      const formData = {
+        // Parent info
+        parentFirstName: parentData.firstName,
+        parentLastName: parentData.lastName,
+        parentEmail: parentData.email,
+        parentPhone: parentData.phone,
+        churchName: parentData.churchName,
+        // Child info
+        childFirstName: childData.firstName,
+        childLastName: childData.lastName,
+        childDisplayName: `${childData.firstName} ${childData.lastName.charAt(0)}.`,
+        dateOfBirth: childData.dateOfBirth,
+        gender: childData.gender,
+        schoolName: childData.schoolName,
+        schoolGrade: childData.schoolGrade,
+        medicalConditions: childData.medicalConditions,
+        photoConsent: childData.photoConsent ? "Yes" : "No",
+        // Generated PIN
+        pin: pin,
+        // Registration date
+        registrationDate: new Date().toISOString(),
+      }
 
-      if (authError) throw authError
+      // Send to Google Sheets via Apps Script
+      // Replace this URL with your Google Apps Script web app URL
+      const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
 
-      // For demo, redirect to success page
-      router.push("/signup/success")
+      if (GOOGLE_SCRIPT_URL) {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        })
+      }
+
+      // Set the generated PIN and show success
+      setGeneratedPIN(pin)
+      setCurrentStep(3)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed")
+      setError(err instanceof Error ? err.message : "Registration failed. Please try again.")
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const getDisplayName = () => {
-    if (childData.lastName) {
-      return `${childData.firstName} ${childData.lastName.charAt(0)}.`
-    }
-    return childData.firstName
   }
 
   return (
@@ -181,29 +198,36 @@ export default function SignupPage() {
 
         <Card variant="glass" className="shadow-xl">
           <CardHeader className="text-center pb-2">
-            <CardTitle className="text-2xl">Register Your Child</CardTitle>
+            <CardTitle className="text-2xl">
+              {currentStep === 3 ? "Registration Complete!" : "Register Your Child"}
+            </CardTitle>
             <CardDescription>
-              Join our family and start your child&apos;s faith journey
+              {currentStep === 3
+                ? "Save your child's PIN to access the curriculum"
+                : "Join our family and start your child's faith journey"
+              }
             </CardDescription>
           </CardHeader>
           <CardContent>
             {/* Progress */}
-            <div className="mb-6">
-              <div className="flex justify-between mb-2">
-                {steps.map((step) => (
-                  <div
-                    key={step.id}
-                    className={`flex items-center gap-1 text-sm ${
-                      currentStep >= step.id ? "text-amber-600" : "text-slate-400"
-                    }`}
-                  >
-                    <step.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{step.title}</span>
-                  </div>
-                ))}
+            {currentStep < 3 && (
+              <div className="mb-6">
+                <div className="flex justify-between mb-2">
+                  {steps.map((step) => (
+                    <div
+                      key={step.id}
+                      className={`flex items-center gap-1 text-sm ${
+                        currentStep >= step.id ? "text-amber-600" : "text-slate-400"
+                      }`}
+                    >
+                      <step.icon className="w-4 h-4" />
+                      <span className="hidden sm:inline">{step.title}</span>
+                    </div>
+                  ))}
+                </div>
+                <Progress value={progress} className="h-2" />
               </div>
-              <Progress value={progress} className="h-2" />
-            </div>
+            )}
 
             {/* Step 1: Parent Information */}
             {currentStep === 1 && (
@@ -282,52 +306,6 @@ export default function SignupPage() {
                     value={parentData.churchName}
                     onChange={handleParentChange}
                   />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password *</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <Input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Min 8 characters"
-                        value={parentData.password}
-                        onChange={handleParentChange}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm *</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <Input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Confirm password"
-                        value={parentData.confirmPassword}
-                        onChange={handleParentChange}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="showPassword"
-                    checked={showPassword}
-                    onCheckedChange={(checked) => setShowPassword(checked as boolean)}
-                  />
-                  <Label htmlFor="showPassword" className="text-sm text-slate-500">
-                    Show passwords
-                  </Label>
                 </div>
               </motion.div>
             )}
@@ -456,8 +434,6 @@ export default function SignupPage() {
                       </Label>
                       <p className="text-xs text-slate-500 mt-1">
                         I consent to my child being photographed during ministry activities.
-                        Photos may be used for internal records and, with further permission,
-                        for ministry communications.
                       </p>
                     </div>
                   </div>
@@ -465,52 +441,73 @@ export default function SignupPage() {
               </motion.div>
             )}
 
-            {/* Step 3: Confirmation */}
+            {/* Step 3: Success with PIN */}
             {currentStep === 3 && (
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-4"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-6 text-center"
               >
-                <Badge variant="success" className="mb-2">
-                  <CheckCircle2 className="w-3 h-3 mr-1" />
-                  Review & Confirm
-                </Badge>
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-10 h-10 text-green-600" />
+                </div>
 
-                <div className="space-y-4">
-                  <Card className="bg-slate-50">
-                    <CardContent className="pt-4">
-                      <h4 className="font-semibold text-slate-800 mb-2">Parent Information</h4>
-                      <div className="text-sm text-slate-600 space-y-1">
-                        <p><span className="font-medium">Name:</span> {parentData.firstName} {parentData.lastName}</p>
-                        <p><span className="font-medium">Email:</span> {parentData.email}</p>
-                        {parentData.phone && <p><span className="font-medium">Phone:</span> {parentData.phone}</p>}
-                        {parentData.churchName && <p><span className="font-medium">Church:</span> {parentData.churchName}</p>}
-                      </div>
-                    </CardContent>
-                  </Card>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-800 mb-2">
+                    Welcome, {childData.firstName}!
+                  </h3>
+                  <p className="text-slate-600">
+                    Registration successful! Here is your child&apos;s unique PIN:
+                  </p>
+                </div>
 
-                  <Card className="bg-amber-50 border-amber-100">
-                    <CardContent className="pt-4">
-                      <h4 className="font-semibold text-slate-800 mb-2">Child Information</h4>
-                      <div className="text-sm text-slate-600 space-y-1">
-                        <p><span className="font-medium">Display Name:</span> {getDisplayName()}</p>
-                        <p><span className="font-medium">Date of Birth:</span> {childData.dateOfBirth}</p>
-                        <p><span className="font-medium">Gender:</span> {childData.gender}</p>
-                        {childData.schoolName && <p><span className="font-medium">School:</span> {childData.schoolName}</p>}
-                        <p><span className="font-medium">Photo Consent:</span> {childData.photoConsent ? "Yes" : "No"}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
-                    <p className="text-sm text-blue-700">
-                      <strong>What happens next?</strong> After registration, our team will review
-                      your application and contact you with your child&apos;s class assignment
-                      and login PIN within 24-48 hours.
-                    </p>
+                {/* PIN Display */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-2xl border-2 border-amber-200">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Key className="w-5 h-5 text-amber-600" />
+                    <span className="text-sm font-medium text-amber-700">Child&apos;s Login PIN</span>
                   </div>
+                  <div className="text-5xl font-bold tracking-[0.3em] text-amber-600 font-mono">
+                    {generatedPIN}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={copyPIN}
+                    className="mt-4"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy PIN
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 text-left">
+                  <p className="text-sm text-blue-700">
+                    <strong>Important:</strong> Save this PIN! Your child will use it to:
+                  </p>
+                  <ul className="text-sm text-blue-600 mt-2 space-y-1 list-disc list-inside">
+                    <li>Access their curriculum and lessons</li>
+                    <li>View their scores and progress</li>
+                    <li>Earn badges and rewards</li>
+                  </ul>
+                </div>
+
+                <div className="flex gap-3">
+                  <Link href="/login" className="flex-1">
+                    <Button className="w-full">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Go to Login
+                    </Button>
+                  </Link>
                 </div>
               </motion.div>
             )}
@@ -523,41 +520,43 @@ export default function SignupPage() {
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex gap-3 mt-6">
-              {currentStep > 1 && (
-                <Button variant="outline" onClick={handleBack} className="flex-1">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back
-                </Button>
-              )}
-              {currentStep < 3 ? (
-                <Button onClick={handleNext} className="flex-1">
-                  Next
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              ) : (
-                <Button onClick={handleSubmit} className="flex-1" disabled={isLoading}>
+            {currentStep < 3 && (
+              <div className="flex gap-3 mt-6">
+                {currentStep > 1 && (
+                  <Button variant="outline" onClick={handleBack} className="flex-1">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back
+                  </Button>
+                )}
+                <Button onClick={handleNext} className="flex-1" disabled={isLoading}>
                   {isLoading ? (
                     <span className="flex items-center gap-2">
                       <span className="animate-spin">&#9696;</span>
                       Registering...
                     </span>
-                  ) : (
+                  ) : currentStep === 2 ? (
                     <span className="flex items-center gap-2">
                       <UserPlus className="w-4 h-4" />
                       Complete Registration
                     </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      Next
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
                   )}
                 </Button>
-              )}
-            </div>
+              </div>
+            )}
 
-            <div className="mt-6 text-center text-sm text-slate-500">
-              Already have an account?{" "}
-              <Link href="/login" className="text-amber-600 hover:text-amber-700 font-medium">
-                Sign in here
-              </Link>
-            </div>
+            {currentStep < 3 && (
+              <div className="mt-6 text-center text-sm text-slate-500">
+                Already registered?{" "}
+                <Link href="/login" className="text-amber-600 hover:text-amber-700 font-medium">
+                  Sign in here
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
