@@ -10,12 +10,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { createClient } from "@/lib/supabase/client"
 
 export default function LoginPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [pin, setPin] = useState("")
+
+  const supabase = createClient()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,8 +30,25 @@ export default function LoginPage() {
         throw new Error("PIN must be 4 digits")
       }
 
-      // Store PIN in session storage for the child portal
-      sessionStorage.setItem("childPIN", pin)
+      // Look up child by PIN in database
+      const { data: child, error: dbError } = await supabase
+        .from("children")
+        .select("id, first_name, last_name, display_name, current_level, total_points")
+        .eq("pin_code", pin)
+        .single()
+
+      if (dbError || !child) {
+        throw new Error("Invalid PIN. Please try again.")
+      }
+
+      // Store child data in session storage
+      sessionStorage.setItem("childSession", JSON.stringify({
+        id: child.id,
+        firstName: child.first_name,
+        displayName: child.display_name,
+        level: child.current_level,
+        points: child.total_points,
+      }))
 
       // Navigate to child portal
       router.push("/child")
@@ -110,7 +130,7 @@ export default function LoginPage() {
                 {isLoading ? (
                   <span className="flex items-center gap-2">
                     <span className="animate-spin">&#9696;</span>
-                    Entering...
+                    Checking...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
