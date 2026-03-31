@@ -16,7 +16,6 @@ import {
   Copy,
   Check,
   BookOpen,
-  Heart,
   Star,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -34,167 +33,8 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 
-// Generate unique 4-digit PIN
 function generatePIN(): string {
   return Math.floor(1000 + Math.random() * 9000).toString()
-}
-
-// Floating animation variants
-const floatVariants = {
-  animate: {
-    y: [0, -10, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-}
-
-// Animated background elements
-function AnimatedBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50" />
-
-      {/* Animated stars */}
-      <div className="absolute inset-0 bg-pattern-stars opacity-30" />
-
-      {/* Floating decorative elements */}
-      <motion.div
-        variants={floatVariants}
-        animate="animate"
-        className="absolute top-20 left-10 text-6xl opacity-20"
-      >
-        📖
-      </motion.div>
-      <motion.div
-        variants={floatVariants}
-        animate="animate"
-        style={{ animationDelay: "0.5s" }}
-        className="absolute top-40 right-10 text-5xl opacity-20"
-      >
-        ✝️
-      </motion.div>
-      <motion.div
-        variants={floatVariants}
-        animate="animate"
-        style={{ animationDelay: "1s" }}
-        className="absolute bottom-40 left-20 text-4xl opacity-20"
-      >
-        🙏
-      </motion.div>
-      <motion.div
-        variants={floatVariants}
-        animate="animate"
-        style={{ animationDelay: "1.5s" }}
-        className="absolute bottom-20 right-20 text-5xl opacity-20"
-      >
-        ⭐
-      </motion.div>
-      <motion.div
-        variants={floatVariants}
-        animate="animate"
-        style={{ animationDelay: "2s" }}
-        className="absolute top-1/3 right-1/4 text-4xl opacity-15"
-      >
-        💛
-      </motion.div>
-
-      {/* Animated circles */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-gradient-to-br from-amber-300 to-orange-300"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-        className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-gradient-to-br from-pink-300 to-purple-300"
-      />
-    </div>
-  )
-}
-
-// Illustration of children with Bible
-function ChildrenIllustration() {
-  return (
-    <div className="flex justify-center mb-6">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative"
-      >
-        <div className="flex items-end gap-2">
-          {/* Child 1 - reading */}
-          <motion.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-            className="flex flex-col items-center"
-          >
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center text-2xl shadow-lg">
-              👧
-            </div>
-            <div className="w-8 h-6 bg-amber-600 rounded-sm mt-1 flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-amber-100" />
-            </div>
-          </motion.div>
-
-          {/* Bible in center */}
-          <motion.div
-            animate={{ rotateY: [0, 10, 0, -10, 0] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="w-16 h-20 bg-gradient-to-br from-amber-700 to-amber-900 rounded-r-lg shadow-xl flex items-center justify-center relative mx-2"
-          >
-            <div className="absolute left-0 top-0 bottom-0 w-2 bg-amber-950 rounded-l" />
-            <span className="text-amber-200 text-xs font-bold">BIBLE</span>
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute -top-2 -right-2"
-            >
-              <Sparkles className="w-5 h-5 text-amber-400" />
-            </motion.div>
-          </motion.div>
-
-          {/* Child 2 - praying */}
-          <motion.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            className="flex flex-col items-center"
-          >
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center text-2xl shadow-lg">
-              👦
-            </div>
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <Heart className="w-4 h-4 text-pink-400 mt-1" />
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Sparkles around */}
-        <motion.div
-          animate={{ opacity: [0, 1, 0], scale: [0.8, 1.2, 0.8] }}
-          transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-          className="absolute -top-4 left-1/4"
-        >
-          <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-        </motion.div>
-        <motion.div
-          animate={{ opacity: [0, 1, 0], scale: [0.8, 1.2, 0.8] }}
-          transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
-          className="absolute -top-2 right-1/4"
-        >
-          <Star className="w-3 h-3 text-pink-400 fill-pink-400" />
-        </motion.div>
-      </motion.div>
-    </div>
-  )
 }
 
 export default function SignupPage() {
@@ -207,11 +47,9 @@ export default function SignupPage() {
   const [copied, setCopied] = useState(false)
   const [step, setStep] = useState<"login" | "child-info" | "complete">("login")
 
-  // Parent contact info
   const [phone, setPhone] = useState("")
   const [churchName, setChurchName] = useState("")
 
-  // Child form state
   const [childData, setChildData] = useState({
     firstName: "",
     lastName: "",
@@ -225,7 +63,6 @@ export default function SignupPage() {
 
   const supabase = createClient()
 
-  // Check if user is already logged in
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -239,7 +76,6 @@ export default function SignupPage() {
     }
     checkUser()
 
-    // Listen for auth changes (after Google redirect)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
         setUser({
@@ -295,10 +131,8 @@ export default function SignupPage() {
       const { data: { user: authUser } } = await supabase.auth.getUser()
       if (!authUser) throw new Error("Not authenticated")
 
-      // Generate unique PIN
       const pin = generatePIN()
 
-      // Update parent profile
       await supabase.from("profiles").upsert({
         id: authUser.id,
         email: authUser.email,
@@ -308,7 +142,6 @@ export default function SignupPage() {
         role: "parent",
       })
 
-      // Insert child record
       const { error: childError } = await supabase.from("children").insert({
         parent_id: authUser.id,
         first_name: childData.firstName,
@@ -335,65 +168,48 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-8 relative">
-      <AnimatedBackground />
+    <div className="min-h-screen bg-amber-400 flex items-center justify-center p-4 py-8">
+      {/* Star pattern overlay */}
+      <div className="absolute inset-0 bg-pattern-stars opacity-40" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
         className="w-full max-w-lg relative z-10"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center gap-2 mb-4">
-          <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg"
-          >
-            <Sparkles className="w-6 h-6 text-white" />
-          </motion.div>
+        <Link href="/" className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-xl">
+            <Sparkles className="w-8 h-8 text-white" />
+          </div>
           <div>
-            <h1 className="font-bold text-xl text-slate-800">The Chosen</h1>
-            <p className="text-xs text-amber-600 font-medium -mt-1">Generation</p>
+            <h1 className="font-bold text-2xl text-slate-800">The Chosen</h1>
+            <p className="text-sm text-orange-700 font-semibold -mt-1">Generation</p>
           </div>
         </Link>
 
-        {/* Illustration */}
-        {step === "login" && <ChildrenIllustration />}
-
-        <Card variant="glass" className="shadow-2xl border-white/50">
+        <Card className="shadow-2xl border-0 bg-white">
           <CardHeader className="text-center pb-2">
-            <CardTitle className="text-2xl bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            <CardTitle className="text-2xl text-slate-800">
               {step === "complete" ? "Registration Complete!" : "Register Your Child"}
             </CardTitle>
             <CardDescription className="text-slate-600">
               {step === "login" && "Sign in with Google to get started"}
               {step === "child-info" && "Enter your child's information"}
-              {step === "complete" && "Save your child's PIN to access the curriculum"}
+              {step === "complete" && "Save your child's PIN"}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {/* Step 1: Google Sign In */}
             {step === "login" && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-6"
-              >
+              <div className="space-y-6">
                 <Button
                   onClick={handleGoogleSignIn}
                   disabled={isGoogleLoading}
-                  className="w-full h-14 text-lg bg-white hover:bg-gray-50 text-slate-700 border-2 border-slate-200 shadow-lg hover:shadow-xl transition-all"
+                  className="w-full h-14 text-lg bg-white hover:bg-gray-50 text-slate-700 border-2 border-slate-200 shadow-md"
                 >
                   {isGoogleLoading ? (
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="mr-2"
-                    >
-                      ⏳
-                    </motion.span>
+                    <span className="animate-spin mr-2">⏳</span>
                   ) : (
                     <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -405,62 +221,39 @@ export default function SignupPage() {
                   Continue with Google
                 </Button>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-200" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white/70 text-slate-500 rounded">Secure & Easy</span>
-                  </div>
-                </div>
-
-                <div className="text-center text-sm text-slate-500">
+                <p className="text-center text-sm text-slate-500">
                   By signing up, you agree to our{" "}
-                  <Link href="/terms" className="text-amber-600 hover:underline font-medium">Terms</Link>
+                  <Link href="/terms" className="text-orange-600 hover:underline">Terms</Link>
                   {" "}and{" "}
-                  <Link href="/privacy" className="text-amber-600 hover:underline font-medium">Privacy Policy</Link>
-                </div>
+                  <Link href="/privacy" className="text-orange-600 hover:underline">Privacy Policy</Link>
+                </p>
 
                 {error && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm"
-                  >
+                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
                     {error}
-                  </motion.div>
+                  </div>
                 )}
 
-                <div className="mt-6 text-center text-sm text-slate-500">
+                <p className="text-center text-slate-600">
                   Already registered?{" "}
-                  <Link href="/login" className="text-amber-600 hover:text-amber-700 font-semibold">
+                  <Link href="/login" className="text-orange-600 hover:text-orange-700 font-semibold">
                     Sign in here
                   </Link>
-                </div>
-              </motion.div>
+                </p>
+              </div>
             )}
 
             {/* Step 2: Child Information */}
             {step === "child-info" && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-4"
-              >
-                {/* Show logged in user */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 flex items-center gap-2"
-                >
+              <div className="space-y-4">
+                <div className="p-3 bg-green-50 rounded-lg border border-green-200 flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-green-700 font-medium">Signed in as {user?.email}</span>
-                </motion.div>
+                  <span className="text-sm text-green-700">Signed in as {user?.email}</span>
+                </div>
 
-                {/* Optional parent contact */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-slate-700">Phone (optional)</Label>
+                    <Label htmlFor="phone">Phone (optional)</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <Input
@@ -469,49 +262,46 @@ export default function SignupPage() {
                         placeholder="+1 234 567 8900"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="pl-10 border-slate-200 focus:border-amber-400"
+                        className="pl-10"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="churchName" className="text-slate-700">Church (optional)</Label>
+                    <Label htmlFor="churchName">Church (optional)</Label>
                     <Input
                       id="churchName"
                       placeholder="Church name"
                       value={churchName}
                       onChange={(e) => setChurchName(e.target.value)}
-                      className="border-slate-200 focus:border-amber-400"
                     />
                   </div>
                 </div>
 
-                <Badge variant="magic" className="mt-4">
+                <Badge className="bg-orange-500 text-white">
                   <Baby className="w-3 h-3 mr-1" />
                   Child Information
                 </Badge>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-slate-700">First Name *</Label>
+                    <Label htmlFor="firstName">First Name *</Label>
                     <Input
                       id="firstName"
                       name="firstName"
                       placeholder="Emma"
                       value={childData.firstName}
                       onChange={handleChildChange}
-                      className="border-slate-200 focus:border-amber-400"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName" className="text-slate-700">Last Name *</Label>
+                    <Label htmlFor="lastName">Last Name *</Label>
                     <Input
                       id="lastName"
                       name="lastName"
                       placeholder="Doe"
                       value={childData.lastName}
                       onChange={handleChildChange}
-                      className="border-slate-200 focus:border-amber-400"
                       required
                     />
                   </div>
@@ -519,7 +309,7 @@ export default function SignupPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth" className="text-slate-700">Date of Birth *</Label>
+                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
                     <div className="relative">
                       <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <Input
@@ -528,18 +318,18 @@ export default function SignupPage() {
                         type="date"
                         value={childData.dateOfBirth}
                         onChange={handleChildChange}
-                        className="pl-10 border-slate-200 focus:border-amber-400"
+                        className="pl-10"
                         required
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-slate-700">Gender *</Label>
+                    <Label htmlFor="gender">Gender *</Label>
                     <Select
                       value={childData.gender}
                       onValueChange={(value) => setChildData({ ...childData, gender: value })}
                     >
-                      <SelectTrigger className="border-slate-200 focus:border-amber-400">
+                      <SelectTrigger>
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -552,7 +342,7 @@ export default function SignupPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="schoolName" className="text-slate-700">School</Label>
+                    <Label htmlFor="schoolName">School</Label>
                     <div className="relative">
                       <School className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <Input
@@ -561,36 +351,34 @@ export default function SignupPage() {
                         placeholder="School name"
                         value={childData.schoolName}
                         onChange={handleChildChange}
-                        className="pl-10 border-slate-200 focus:border-amber-400"
+                        className="pl-10"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="schoolGrade" className="text-slate-700">Grade</Label>
+                    <Label htmlFor="schoolGrade">Grade</Label>
                     <Input
                       id="schoolGrade"
                       name="schoolGrade"
                       placeholder="Grade 3"
                       value={childData.schoolGrade}
                       onChange={handleChildChange}
-                      className="border-slate-200 focus:border-amber-400"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="medicalConditions" className="text-slate-700">Medical Conditions/Allergies</Label>
+                  <Label htmlFor="medicalConditions">Medical Conditions/Allergies</Label>
                   <Input
                     id="medicalConditions"
                     name="medicalConditions"
                     placeholder="None"
                     value={childData.medicalConditions}
                     onChange={handleChildChange}
-                    className="border-slate-200 focus:border-amber-400"
                   />
                 </div>
 
-                <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
+                <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
                   <div className="flex items-start gap-3">
                     <Checkbox
                       id="photoConsent"
@@ -598,10 +386,9 @@ export default function SignupPage() {
                       onCheckedChange={(checked) =>
                         setChildData({ ...childData, photoConsent: checked as boolean })
                       }
-                      className="border-amber-400 data-[state=checked]:bg-amber-500"
                     />
                     <div>
-                      <Label htmlFor="photoConsent" className="text-sm font-medium text-slate-700">
+                      <Label htmlFor="photoConsent" className="text-sm font-medium">
                         Photo & Media Consent
                       </Label>
                       <p className="text-xs text-slate-500 mt-1">
@@ -612,24 +399,15 @@ export default function SignupPage() {
                 </div>
 
                 {error && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm"
-                  >
+                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
                     {error}
-                  </motion.div>
+                  </div>
                 )}
 
-                <Button onClick={handleSubmit} className="w-full h-12 text-lg shadow-lg" disabled={isLoading}>
+                <Button onClick={handleSubmit} className="w-full h-12 text-lg bg-orange-500 hover:bg-orange-600" disabled={isLoading}>
                   {isLoading ? (
                     <span className="flex items-center gap-2">
-                      <motion.span
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      >
-                        ⏳
-                      </motion.span>
+                      <span className="animate-spin">⏳</span>
                       Registering...
                     </span>
                   ) : (
@@ -639,107 +417,76 @@ export default function SignupPage() {
                     </span>
                   )}
                 </Button>
-              </motion.div>
+              </div>
             )}
 
             {/* Step 3: Success with PIN */}
             {step === "complete" && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="space-y-6 text-center"
-              >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", bounce: 0.5 }}
-                  className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-lg"
-                >
-                  <CheckCircle2 className="w-12 h-12 text-white" />
-                </motion.div>
+              <div className="space-y-6 text-center">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-10 h-10 text-white" />
+                </div>
 
                 <div>
-                  <motion.h3
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="text-2xl font-bold text-slate-800 mb-2"
-                  >
-                    Welcome, {childData.firstName}! 🎉
-                  </motion.h3>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">
+                    Welcome, {childData.firstName}!
+                  </h3>
                   <p className="text-slate-600">
-                    Here is your child&apos;s unique login PIN:
+                    Here is your child&apos;s login PIN:
                   </p>
                 </div>
 
-                {/* PIN Display */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-gradient-to-br from-amber-100 via-orange-100 to-pink-100 p-8 rounded-2xl border-2 border-amber-300 shadow-xl"
-                >
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Key className="w-6 h-6 text-amber-600" />
-                    <span className="text-sm font-semibold text-amber-700">Child&apos;s Login PIN</span>
+                <div className="bg-amber-100 p-6 rounded-xl border-2 border-amber-300">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Key className="w-5 h-5 text-amber-700" />
+                    <span className="text-sm font-medium text-amber-700">Child&apos;s Login PIN</span>
                   </div>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.4, type: "spring", bounce: 0.4 }}
-                    className="text-6xl font-bold tracking-[0.4em] text-amber-600 font-mono"
-                  >
+                  <div className="text-5xl font-bold tracking-[0.3em] text-amber-700 font-mono">
                     {generatedPIN}
-                  </motion.div>
+                  </div>
                   <Button
                     variant="outline"
-                    size="lg"
                     onClick={copyPIN}
-                    className="mt-6 border-amber-400 text-amber-700 hover:bg-amber-50"
+                    className="mt-4 border-amber-400 text-amber-700 hover:bg-amber-50"
                   >
                     {copied ? (
                       <>
-                        <Check className="w-5 h-5 mr-2 text-green-600" />
+                        <Check className="w-4 h-4 mr-2" />
                         Copied!
                       </>
                     ) : (
                       <>
-                        <Copy className="w-5 h-5 mr-2" />
+                        <Copy className="w-4 h-4 mr-2" />
                         Copy PIN
                       </>
                     )}
                   </Button>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-gradient-to-r from-blue-50 to-indigo-50 p-5 rounded-xl border border-blue-200 text-left"
-                >
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 text-left">
                   <p className="text-sm text-blue-700 font-medium mb-2">
-                    ✨ Your child uses this PIN to:
+                    Your child uses this PIN to:
                   </p>
-                  <ul className="text-sm text-blue-600 space-y-2">
+                  <ul className="text-sm text-blue-600 space-y-1">
                     <li className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" /> Access lessons and curriculum
+                      <BookOpen className="w-4 h-4" /> Access lessons
                     </li>
                     <li className="flex items-center gap-2">
-                      <Star className="w-4 h-4" /> View scores and progress
+                      <Star className="w-4 h-4" /> View progress
                     </li>
                     <li className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" /> Earn badges and rewards
+                      <Sparkles className="w-4 h-4" /> Earn badges
                     </li>
                   </ul>
-                </motion.div>
+                </div>
 
                 <Link href="/login" className="block">
-                  <Button variant="magic" className="w-full h-14 text-lg shadow-xl">
+                  <Button className="w-full h-12 text-lg bg-orange-500 hover:bg-orange-600">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Go to Login
                   </Button>
                 </Link>
-              </motion.div>
+              </div>
             )}
           </CardContent>
         </Card>
