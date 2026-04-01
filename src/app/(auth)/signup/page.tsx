@@ -17,12 +17,11 @@ import {
   Check,
   BookOpen,
   Star,
+  Heart,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
@@ -168,48 +167,141 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-400 flex items-center justify-center p-4 py-8">
-      {/* Star pattern overlay */}
-      <div className="absolute inset-0 bg-pattern-stars opacity-40" />
-
+    <div className="min-h-screen bg-gradient-to-b from-yellow-300 via-amber-300 to-orange-300 p-4 py-8 overflow-hidden relative">
+      {/* Decorative floating shapes */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-lg relative z-10"
+        animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-10 left-10 text-6xl"
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-xl">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
-          <div>
-            <h1 className="font-bold text-2xl text-slate-800">The Chosen</h1>
-            <p className="text-sm text-orange-700 font-semibold -mt-1">Generation</p>
-          </div>
-        </Link>
+        ⭐
+      </motion.div>
+      <motion.div
+        animate={{ y: [0, -15, 0], rotate: [0, -10, 0] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute top-20 right-10 text-5xl"
+      >
+        📖
+      </motion.div>
+      <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-32 left-8 text-5xl"
+      >
+        🙏
+      </motion.div>
+      <motion.div
+        animate={{ y: [0, -18, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute bottom-40 right-12 text-5xl"
+      >
+        💛
+      </motion.div>
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/3 left-4 text-4xl opacity-60"
+      >
+        ✨
+      </motion.div>
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-1/4 right-4 text-4xl opacity-60"
+      >
+        🌟
+      </motion.div>
 
-        <Card className="shadow-2xl border-0 bg-white">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-2xl text-slate-800">
-              {step === "complete" ? "Registration Complete!" : "Register Your Child"}
-            </CardTitle>
-            <CardDescription className="text-slate-600">
-              {step === "login" && "Sign in with Google to get started"}
-              {step === "child-info" && "Enter your child's information"}
-              {step === "complete" && "Save your child's PIN"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+      <div className="max-w-lg mx-auto relative z-10">
+        {/* Header with logo */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="text-center mb-6"
+        >
+          <Link href="/" className="inline-flex items-center gap-3">
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg border-4 border-white"
+            >
+              <Sparkles className="w-9 h-9 text-white" />
+            </motion.div>
+            <div className="text-left">
+              <h1 className="font-bold text-3xl text-orange-800 drop-shadow-sm">The Chosen</h1>
+              <p className="text-lg text-orange-600 font-semibold -mt-1">Generation</p>
+            </div>
+          </Link>
+        </motion.div>
+
+        {/* Main Card */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-3xl shadow-2xl border-4 border-orange-400 overflow-hidden"
+        >
+          {/* Colorful top bar */}
+          <div className="h-3 bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400" />
+
+          {/* Card header */}
+          <div className="bg-gradient-to-r from-orange-100 to-yellow-100 px-6 py-5 border-b-2 border-orange-200">
+            <div className="flex items-center justify-center gap-3">
+              {step === "complete" ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", bounce: 0.5 }}
+                >
+                  <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+                    <CheckCircle2 className="w-7 h-7 text-white" />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-4xl"
+                >
+                  👨‍👩‍👧‍👦
+                </motion.div>
+              )}
+              <div>
+                <h2 className="text-2xl font-bold text-orange-800">
+                  {step === "complete" ? "All Done!" : "Register Your Child"}
+                </h2>
+                <p className="text-orange-600 text-sm">
+                  {step === "login" && "Join our Bible School family"}
+                  {step === "child-info" && "Tell us about your child"}
+                  {step === "complete" && "Save the PIN below"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Card content */}
+          <div className="p-6">
             {/* Step 1: Google Sign In */}
             {step === "login" && (
-              <div className="space-y-6">
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                className="space-y-5"
+              >
+                {/* Cute illustration */}
+                <div className="flex justify-center gap-4 py-4">
+                  <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-5xl">👧</motion.div>
+                  <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} className="text-5xl">📚</motion.div>
+                  <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} className="text-5xl">👦</motion.div>
+                </div>
+
                 <Button
                   onClick={handleGoogleSignIn}
                   disabled={isGoogleLoading}
-                  className="w-full h-14 text-lg bg-white hover:bg-gray-50 text-slate-700 border-2 border-slate-200 shadow-md"
+                  className="w-full h-14 text-lg bg-white hover:bg-gray-50 text-slate-700 border-3 border-slate-300 shadow-lg rounded-2xl"
                 >
                   {isGoogleLoading ? (
-                    <span className="animate-spin mr-2">⏳</span>
+                    <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="text-2xl mr-2">⏳</motion.span>
                   ) : (
                     <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -221,164 +313,183 @@ export default function SignupPage() {
                   Continue with Google
                 </Button>
 
-                <p className="text-center text-sm text-slate-500">
-                  By signing up, you agree to our{" "}
-                  <Link href="/terms" className="text-orange-600 hover:underline">Terms</Link>
-                  {" "}and{" "}
-                  <Link href="/privacy" className="text-orange-600 hover:underline">Privacy Policy</Link>
-                </p>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-0.5 bg-orange-200 rounded" />
+                  <span className="text-orange-400 text-sm font-medium">Safe & Secure</span>
+                  <div className="flex-1 h-0.5 bg-orange-200 rounded" />
+                </div>
 
                 {error && (
-                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
-                    {error}
+                  <div className="p-3 rounded-xl bg-red-100 border-2 border-red-300 text-red-600 text-sm flex items-center gap-2">
+                    <span>⚠️</span> {error}
                   </div>
                 )}
 
-                <p className="text-center text-slate-600">
-                  Already registered?{" "}
-                  <Link href="/login" className="text-orange-600 hover:text-orange-700 font-semibold">
-                    Sign in here
+                <div className="text-center pt-2">
+                  <p className="text-slate-500 mb-1">Already have a PIN?</p>
+                  <Link href="/login" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-bold text-lg">
+                    Sign in here <span>→</span>
                   </Link>
-                </p>
-              </div>
+                </div>
+              </motion.div>
             )}
 
             {/* Step 2: Child Information */}
             {step === "child-info" && (
-              <div className="space-y-4">
-                <div className="p-3 bg-green-50 rounded-lg border border-green-200 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-green-700">Signed in as {user?.email}</span>
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                className="space-y-4"
+              >
+                <div className="p-3 bg-green-100 rounded-xl border-2 border-green-300 flex items-center gap-2">
+                  <span className="text-xl">✅</span>
+                  <span className="text-sm text-green-700 font-medium">Signed in as {user?.email}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone (optional)</Label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                {/* Parent Contact Section */}
+                <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
+                  <h3 className="font-bold text-blue-700 mb-3 flex items-center gap-2">
+                    <span className="text-xl">👨‍👩‍👧</span> Parent Contact (Optional)
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor="phone" className="text-blue-600 text-sm">Phone</Label>
+                      <div className="relative mt-1">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+1 234 567 8900"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="pl-10 rounded-xl border-2 border-blue-200"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="churchName" className="text-blue-600 text-sm">Church</Label>
                       <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="+1 234 567 8900"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="pl-10"
+                        id="churchName"
+                        placeholder="Church name"
+                        value={churchName}
+                        onChange={(e) => setChurchName(e.target.value)}
+                        className="mt-1 rounded-xl border-2 border-blue-200"
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="churchName">Church (optional)</Label>
-                    <Input
-                      id="churchName"
-                      placeholder="Church name"
-                      value={churchName}
-                      onChange={(e) => setChurchName(e.target.value)}
-                    />
-                  </div>
                 </div>
 
-                <Badge className="bg-orange-500 text-white">
-                  <Baby className="w-3 h-3 mr-1" />
-                  Child Information
-                </Badge>
+                {/* Child Info Section */}
+                <div className="bg-pink-50 rounded-2xl p-4 border-2 border-pink-200">
+                  <h3 className="font-bold text-pink-700 mb-3 flex items-center gap-2">
+                    <span className="text-xl">👶</span> Child Information
+                  </h3>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name *</Label>
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      placeholder="Emma"
-                      value={childData.firstName}
-                      onChange={handleChildChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name *</Label>
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Doe"
-                      value={childData.lastName}
-                      onChange={handleChildChange}
-                      required
-                    />
-                  </div>
-                </div>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="firstName" className="text-pink-600 text-sm">First Name *</Label>
+                        <Input
+                          id="firstName"
+                          name="firstName"
+                          placeholder="Emma"
+                          value={childData.firstName}
+                          onChange={handleChildChange}
+                          className="mt-1 rounded-xl border-2 border-pink-200"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName" className="text-pink-600 text-sm">Last Name *</Label>
+                        <Input
+                          id="lastName"
+                          name="lastName"
+                          placeholder="Doe"
+                          value={childData.lastName}
+                          onChange={handleChildChange}
+                          className="mt-1 rounded-xl border-2 border-pink-200"
+                          required
+                        />
+                      </div>
+                    </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="dateOfBirth" className="text-pink-600 text-sm">Birthday *</Label>
+                        <div className="relative mt-1">
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-400" />
+                          <Input
+                            id="dateOfBirth"
+                            name="dateOfBirth"
+                            type="date"
+                            value={childData.dateOfBirth}
+                            onChange={handleChildChange}
+                            className="pl-10 rounded-xl border-2 border-pink-200"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="gender" className="text-pink-600 text-sm">Gender *</Label>
+                        <Select
+                          value={childData.gender}
+                          onValueChange={(value) => setChildData({ ...childData, gender: value })}
+                        >
+                          <SelectTrigger className="mt-1 rounded-xl border-2 border-pink-200">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="male">👦 Boy</SelectItem>
+                            <SelectItem value="female">👧 Girl</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="schoolName" className="text-pink-600 text-sm">School</Label>
+                        <div className="relative mt-1">
+                          <School className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-400" />
+                          <Input
+                            id="schoolName"
+                            name="schoolName"
+                            placeholder="School name"
+                            value={childData.schoolName}
+                            onChange={handleChildChange}
+                            className="pl-10 rounded-xl border-2 border-pink-200"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="schoolGrade" className="text-pink-600 text-sm">Grade</Label>
+                        <Input
+                          id="schoolGrade"
+                          name="schoolGrade"
+                          placeholder="Grade 3"
+                          value={childData.schoolGrade}
+                          onChange={handleChildChange}
+                          className="mt-1 rounded-xl border-2 border-pink-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="medicalConditions" className="text-pink-600 text-sm">Allergies/Medical</Label>
                       <Input
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                        type="date"
-                        value={childData.dateOfBirth}
+                        id="medicalConditions"
+                        name="medicalConditions"
+                        placeholder="None"
+                        value={childData.medicalConditions}
                         onChange={handleChildChange}
-                        className="pl-10"
-                        required
+                        className="mt-1 rounded-xl border-2 border-pink-200"
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
-                    <Select
-                      value={childData.gender}
-                      onValueChange={(value) => setChildData({ ...childData, gender: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="schoolName">School</Label>
-                    <div className="relative">
-                      <School className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <Input
-                        id="schoolName"
-                        name="schoolName"
-                        placeholder="School name"
-                        value={childData.schoolName}
-                        onChange={handleChildChange}
-                        className="pl-10"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="schoolGrade">Grade</Label>
-                    <Input
-                      id="schoolGrade"
-                      name="schoolGrade"
-                      placeholder="Grade 3"
-                      value={childData.schoolGrade}
-                      onChange={handleChildChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="medicalConditions">Medical Conditions/Allergies</Label>
-                  <Input
-                    id="medicalConditions"
-                    name="medicalConditions"
-                    placeholder="None"
-                    value={childData.medicalConditions}
-                    onChange={handleChildChange}
-                  />
-                </div>
-
-                <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                {/* Photo Consent */}
+                <div className="bg-amber-50 rounded-2xl p-4 border-2 border-amber-200">
                   <div className="flex items-start gap-3">
                     <Checkbox
                       id="photoConsent"
@@ -386,111 +497,126 @@ export default function SignupPage() {
                       onCheckedChange={(checked) =>
                         setChildData({ ...childData, photoConsent: checked as boolean })
                       }
+                      className="mt-1 border-2 border-amber-400"
                     />
                     <div>
-                      <Label htmlFor="photoConsent" className="text-sm font-medium">
-                        Photo & Media Consent
+                      <Label htmlFor="photoConsent" className="text-amber-700 font-medium flex items-center gap-2">
+                        <span>📷</span> Photo Consent
                       </Label>
-                      <p className="text-xs text-slate-500 mt-1">
-                        I consent to my child being photographed during ministry activities.
+                      <p className="text-xs text-amber-600 mt-1">
+                        Allow photos during ministry activities
                       </p>
                     </div>
                   </div>
                 </div>
 
                 {error && (
-                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
-                    {error}
+                  <div className="p-3 rounded-xl bg-red-100 border-2 border-red-300 text-red-600 text-sm flex items-center gap-2">
+                    <span>⚠️</span> {error}
                   </div>
                 )}
 
-                <Button onClick={handleSubmit} className="w-full h-12 text-lg bg-orange-500 hover:bg-orange-600" disabled={isLoading}>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className="w-full h-14 text-lg bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 rounded-2xl shadow-lg"
+                >
                   {isLoading ? (
                     <span className="flex items-center gap-2">
-                      <span className="animate-spin">⏳</span>
+                      <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>⏳</motion.span>
                       Registering...
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
-                      <UserPlus className="w-5 h-5" />
+                      <UserPlus className="w-6 h-6" />
                       Complete Registration
                     </span>
                   )}
                 </Button>
-              </div>
+              </motion.div>
             )}
 
             {/* Step 3: Success with PIN */}
             {step === "complete" && (
-              <div className="space-y-6 text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-10 h-10 text-white" />
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="space-y-5 text-center"
+              >
+                {/* Celebration */}
+                <div className="flex justify-center gap-2 text-4xl">
+                  <motion.span animate={{ y: [0, -10, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}>🎉</motion.span>
+                  <motion.span animate={{ y: [0, -10, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}>⭐</motion.span>
+                  <motion.span animate={{ y: [0, -10, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}>🎊</motion.span>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">
+                  <h3 className="text-2xl font-bold text-slate-800">
                     Welcome, {childData.firstName}!
                   </h3>
-                  <p className="text-slate-600">
-                    Here is your child&apos;s login PIN:
-                  </p>
+                  <p className="text-slate-600">Here&apos;s your secret login PIN:</p>
                 </div>
 
-                <div className="bg-amber-100 p-6 rounded-xl border-2 border-amber-300">
+                {/* PIN Display */}
+                <div className="bg-gradient-to-br from-yellow-100 to-amber-100 p-6 rounded-2xl border-4 border-amber-400 shadow-inner">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Key className="w-5 h-5 text-amber-700" />
-                    <span className="text-sm font-medium text-amber-700">Child&apos;s Login PIN</span>
+                    <Key className="w-6 h-6 text-amber-600" />
+                    <span className="text-amber-700 font-bold">Your PIN</span>
                   </div>
-                  <div className="text-5xl font-bold tracking-[0.3em] text-amber-700 font-mono">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", bounce: 0.5 }}
+                    className="text-6xl font-bold tracking-[0.4em] text-amber-700 font-mono"
+                  >
                     {generatedPIN}
-                  </div>
+                  </motion.div>
                   <Button
                     variant="outline"
                     onClick={copyPIN}
-                    className="mt-4 border-amber-400 text-amber-700 hover:bg-amber-50"
+                    className="mt-4 rounded-xl border-2 border-amber-400 text-amber-700 hover:bg-amber-50"
                   >
                     {copied ? (
-                      <>
-                        <Check className="w-4 h-4 mr-2" />
-                        Copied!
-                      </>
+                      <><Check className="w-5 h-5 mr-2 text-green-600" /> Copied!</>
                     ) : (
-                      <>
-                        <Copy className="w-4 h-4 mr-2" />
-                        Copy PIN
-                      </>
+                      <><Copy className="w-5 h-5 mr-2" /> Copy PIN</>
                     )}
                   </Button>
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 text-left">
-                  <p className="text-sm text-blue-700 font-medium mb-2">
-                    Your child uses this PIN to:
+                {/* What's next */}
+                <div className="bg-blue-50 p-4 rounded-2xl border-2 border-blue-200 text-left">
+                  <p className="text-blue-700 font-bold mb-2 flex items-center gap-2">
+                    <span>📝</span> With this PIN, your child can:
                   </p>
-                  <ul className="text-sm text-blue-600 space-y-1">
-                    <li className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" /> Access lessons
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Star className="w-4 h-4" /> View progress
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" /> Earn badges
-                    </li>
-                  </ul>
+                  <div className="space-y-2 text-blue-600">
+                    <div className="flex items-center gap-2"><BookOpen className="w-5 h-5" /> Access Bible lessons</div>
+                    <div className="flex items-center gap-2"><Star className="w-5 h-5" /> Earn points & badges</div>
+                    <div className="flex items-center gap-2"><Heart className="w-5 h-5" /> Track their progress</div>
+                  </div>
                 </div>
 
-                <Link href="/login" className="block">
-                  <Button className="w-full h-12 text-lg bg-orange-500 hover:bg-orange-600">
-                    <Sparkles className="w-5 h-5 mr-2" />
+                <Link href="/login">
+                  <Button className="w-full h-14 text-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-2xl shadow-lg">
+                    <Sparkles className="w-6 h-6 mr-2" />
                     Go to Login
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
             )}
-          </CardContent>
-        </Card>
-      </motion.div>
+          </div>
+
+          {/* Colorful bottom bar */}
+          <div className="h-3 bg-gradient-to-r from-purple-400 via-blue-400 via-green-400 via-yellow-400 to-red-400" />
+        </motion.div>
+
+        {/* Footer */}
+        <p className="text-center text-orange-700 text-sm mt-4">
+          By registering, you agree to our{" "}
+          <Link href="/terms" className="underline font-medium">Terms</Link> &{" "}
+          <Link href="/privacy" className="underline font-medium">Privacy</Link>
+        </p>
+      </div>
     </div>
   )
 }
