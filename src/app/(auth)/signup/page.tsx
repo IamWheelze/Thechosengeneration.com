@@ -244,6 +244,15 @@ export default function SignupPage() {
           {/* Colorful top bar */}
           <div className="h-3 bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400" />
 
+          {/* Foundation Values */}
+          <div className="flex justify-center gap-2 py-3 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500">
+            <span className="text-white font-bold text-sm">FAMILY</span>
+            <span className="text-white">•</span>
+            <span className="text-white font-bold text-sm">IDENTITY</span>
+            <span className="text-white">•</span>
+            <span className="text-white font-bold text-sm">PURPOSE</span>
+          </div>
+
           {/* Card header */}
           <div className="bg-gradient-to-r from-orange-100 to-yellow-100 px-6 py-5 border-b-2 border-orange-200">
             <div className="flex items-center justify-center gap-3">
