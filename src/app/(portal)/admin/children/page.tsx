@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import {
   LayoutDashboard,
   Users,
@@ -16,17 +15,15 @@ import {
   FileText,
   BarChart3,
   Search,
-  Filter,
-  MoreVertical,
   Plus,
   Download,
   Eye,
   Edit,
   Trash2,
-  Mail,
-  Phone,
   ChevronLeft,
   ChevronRight,
+  RefreshCw,
+  Key,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -40,18 +37,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
+import { createClient } from "@/lib/supabase/client"
 
-// Demo data
-const children = [
-  { id: "1", name: "Sarah Johnson", parent: "Mary Johnson", class: "FS1-A", level: "FS1", age: 8, status: "active", enrolled: "Jan 15, 2026" },
-  { id: "2", name: "David Okonkwo", parent: "Grace Okonkwo", class: "FS1-A", level: "FS1", age: 7, status: "active", enrolled: "Feb 3, 2026" },
-  { id: "3", name: "Emma Thompson", parent: "Ruth Thompson", class: "FS1-B", level: "FS1", age: 9, status: "active", enrolled: "Dec 10, 2025" },
-  { id: "4", name: "John Smith", parent: "Peter Smith", class: "FS2-A", level: "FS2", age: 10, status: "active", enrolled: "Nov 5, 2025" },
-  { id: "5", name: "Faith Adeyemi", parent: "James Adeyemi", class: "FS2-A", level: "FS2", age: 11, status: "active", enrolled: "Jan 20, 2026" },
-  { id: "6", name: "Samuel Mensah", parent: "Ruth Mensah", class: "Leadership", level: "LEADERSHIP", age: 13, status: "pending", enrolled: "Feb 1, 2026" },
-  { id: "7", name: "Grace Williams", parent: "Daniel Williams", class: "FS1-B", level: "FS1", age: 8, status: "active", enrolled: "Jan 8, 2026" },
-  { id: "8", name: "Michael Brown", parent: "Sarah Brown", class: "FS2-A", level: "FS2", age: 12, status: "inactive", enrolled: "Sep 15, 2025" },
-]
+interface Child {
+  id: string
+  first_name: string
+  last_name: string
+  display_name: string
+  date_of_birth: string
+  gender: string
+  school_name: string | null
+  school_grade: string | null
+  pin_code: string
+  current_level: number
+  total_points: number
+  created_at: string
+  parent_email?: string
+  parent_name?: string
+}
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
@@ -67,17 +77,89 @@ const navItems = [
 ]
 
 export default function AdminChildrenPage() {
+  const [children, setChildren] = useState<Child[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
-  const [levelFilter, setLevelFilter] = useState("all")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [selectedChild, setSelectedChild] = useState<Child | null>(null)
+  const [showPinDialog, setShowPinDialog] = useState(false)
+
+  const supabase = createClient()
+
+  // Fetch children from Supabase
+  const fetchChildren = async () => {
+    setIsLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from("children")
+        .select(`
+          *,
+          profiles:parent_id (
+            email,
+            full_name
+          )
+        `)
+        .order("created_at", { ascending: false })
+
+      if (error) throw error
+
+      const formattedData = data?.map((child) => ({
+        ...child,
+        parent_email: child.profiles?.email,
+        parent_name: child.profiles?.full_name,
+      })) || []
+
+      setChildren(formattedData)
+    } catch (error) {
+      console.error("Error fetching children:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchChildren()
+  }, [])
 
   const filteredChildren = children.filter(child => {
-    const matchesSearch = child.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         child.parent.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesLevel = levelFilter === "all" || child.level === levelFilter
-    const matchesStatus = statusFilter === "all" || child.status === statusFilter
-    return matchesSearch && matchesLevel && matchesStatus
+    const fullName = `${child.first_name} ${child.last_name}`.toLowerCase()
+    const parentName = child.parent_name?.toLowerCase() || ""
+    return fullName.includes(searchQuery.toLowerCase()) ||
+           parentName.includes(searchQuery.toLowerCase())
   })
+
+  const calculateAge = (dob: string) => {
+    const birthDate = new Date(dob)
+    const today = new Date()
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const monthDiff = today.getMonth() - birthDate.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+    return age
+  }
+
+  const handleViewPin = (child: Child) => {
+    setSelectedChild(child)
+    setShowPinDialog(true)
+  }
+
+  const handleDelete = async (childId: string) => {
+    if (!confirm("Are you sure you want to delete this child?")) return
+
+    try {
+      const { error } = await supabase
+        .from("children")
+        .delete()
+        .eq("id", childId)
+
+      if (error) throw error
+
+      fetchChildren()
+    } catch (error) {
+      console.error("Error deleting child:", error)
+      alert("Failed to delete child")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -128,16 +210,16 @@ export default function AdminChildrenPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-bold text-slate-800">Children</h1>
-            <p className="text-slate-500">Manage enrolled children and registrations</p>
+            <p className="text-slate-500">Manage enrolled children and view their PINs</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" onClick={fetchChildren} disabled={isLoading}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
               Export
-            </Button>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Child
             </Button>
           </div>
         </div>
@@ -159,11 +241,13 @@ export default function AdminChildrenPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-500">Active</p>
-                  <p className="text-2xl font-bold text-green-600">{children.filter(c => c.status === "active").length}</p>
+                  <p className="text-sm text-slate-500">Boys</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {children.filter(c => c.gender === "male").length}
+                  </p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-green-600" />
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                  <span className="text-xl">👦</span>
                 </div>
               </div>
             </CardContent>
@@ -172,67 +256,45 @@ export default function AdminChildrenPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-500">Pending</p>
-                  <p className="text-2xl font-bold text-amber-600">{children.filter(c => c.status === "pending").length}</p>
+                  <p className="text-sm text-slate-500">Girls</p>
+                  <p className="text-2xl font-bold text-pink-600">
+                    {children.filter(c => c.gender === "female").length}
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+                  <span className="text-xl">👧</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-500">Total Points</p>
+                  <p className="text-2xl font-bold text-amber-600">
+                    {children.reduce((sum, c) => sum + (c.total_points || 0), 0)}
+                  </p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-amber-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-500">Inactive</p>
-                  <p className="text-2xl font-bold text-slate-400">{children.filter(c => c.status === "inactive").length}</p>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-slate-400" />
+                  <span className="text-xl">⭐</span>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Filters */}
+        {/* Search */}
         <Card className="mb-6">
           <CardContent className="pt-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <Input
-                    placeholder="Search by name or parent..."
-                    className="pl-10"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-              </div>
-              <Select value={levelFilter} onValueChange={setLevelFilter}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Levels</SelectItem>
-                  <SelectItem value="FS1">FS1</SelectItem>
-                  <SelectItem value="FS2">FS2</SelectItem>
-                  <SelectItem value="LEADERSHIP">Leadership</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                placeholder="Search by child name or parent name..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </CardContent>
         </Card>
@@ -243,84 +305,158 @@ export default function AdminChildrenPage() {
             <CardTitle>All Children ({filteredChildren.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Child</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Parent</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Class</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Age</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Status</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Enrolled</th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-slate-500">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredChildren.map((child) => (
-                    <tr key={child.id} className="border-b border-slate-100 hover:bg-slate-50">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-3">
-                          <Avatar>
-                            <AvatarFallback className="bg-amber-100 text-amber-700">
-                              {child.name.split(" ").map(n => n[0]).join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <span className="font-medium text-slate-800">{child.name}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-slate-600">{child.parent}</td>
-                      <td className="py-3 px-4">
-                        <Badge variant="outline">{child.class}</Badge>
-                      </td>
-                      <td className="py-3 px-4 text-slate-600">{child.age} yrs</td>
-                      <td className="py-3 px-4">
-                        <Badge
-                          variant={
-                            child.status === "active" ? "success" :
-                            child.status === "pending" ? "warning" : "secondary"
-                          }
-                        >
-                          {child.status}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4 text-slate-500 text-sm">{child.enrolled}</td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button variant="ghost" size="icon">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
-              <p className="text-sm text-slate-500">
-                Showing {filteredChildren.length} of {children.length} children
-              </p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" disabled>
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" size="sm">
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
+            {isLoading ? (
+              <div className="text-center py-10">
+                <RefreshCw className="w-8 h-8 animate-spin mx-auto text-slate-400" />
+                <p className="mt-2 text-slate-500">Loading children...</p>
               </div>
-            </div>
+            ) : filteredChildren.length === 0 ? (
+              <div className="text-center py-10">
+                <Users className="w-12 h-12 mx-auto text-slate-300" />
+                <p className="mt-2 text-slate-500">No children found</p>
+                <p className="text-sm text-slate-400">Children will appear here after parents register</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Child</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Parent</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Age</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">School</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Points</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">PIN</th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-slate-500">Registered</th>
+                      <th className="text-right py-3 px-4 text-sm font-medium text-slate-500">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredChildren.map((child) => (
+                      <tr key={child.id} className="border-b border-slate-100 hover:bg-slate-50">
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-3">
+                            <Avatar>
+                              <AvatarFallback className={`${child.gender === "female" ? "bg-pink-100 text-pink-700" : "bg-blue-100 text-blue-700"}`}>
+                                {child.first_name[0]}{child.last_name[0]}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-medium text-slate-800">{child.first_name} {child.last_name}</p>
+                              <p className="text-xs text-slate-500">{child.gender === "male" ? "👦 Boy" : "👧 Girl"}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4">
+                          <p className="text-slate-700">{child.parent_name || "—"}</p>
+                          <p className="text-xs text-slate-400">{child.parent_email || "—"}</p>
+                        </td>
+                        <td className="py-3 px-4 text-slate-600">
+                          {child.date_of_birth ? `${calculateAge(child.date_of_birth)} yrs` : "—"}
+                        </td>
+                        <td className="py-3 px-4">
+                          <p className="text-slate-600">{child.school_name || "—"}</p>
+                          <p className="text-xs text-slate-400">{child.school_grade || ""}</p>
+                        </td>
+                        <td className="py-3 px-4">
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                            ⭐ {child.total_points || 0}
+                          </Badge>
+                        </td>
+                        <td className="py-3 px-4">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewPin(child)}
+                            className="font-mono"
+                          >
+                            <Key className="w-3 h-3 mr-1" />
+                            View
+                          </Button>
+                        </td>
+                        <td className="py-3 px-4 text-slate-500 text-sm">
+                          {new Date(child.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleViewPin(child)}>
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600" onClick={() => handleDelete(child.id)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </main>
+
+      {/* PIN Dialog */}
+      <Dialog open={showPinDialog} onOpenChange={setShowPinDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Child Details</DialogTitle>
+            <DialogDescription>
+              View {selectedChild?.first_name}&apos;s information and login PIN
+            </DialogDescription>
+          </DialogHeader>
+          {selectedChild && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Avatar className="w-16 h-16">
+                  <AvatarFallback className={`text-xl ${selectedChild.gender === "female" ? "bg-pink-100 text-pink-700" : "bg-blue-100 text-blue-700"}`}>
+                    {selectedChild.first_name[0]}{selectedChild.last_name[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="text-xl font-bold">{selectedChild.first_name} {selectedChild.last_name}</h3>
+                  <p className="text-slate-500">{selectedChild.display_name}</p>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 p-4 rounded-xl border-2 border-amber-200 text-center">
+                <p className="text-sm text-amber-700 font-medium mb-2">Login PIN</p>
+                <p className="text-4xl font-bold font-mono tracking-widest text-amber-800">
+                  {selectedChild.pin_code}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-slate-500">Parent</p>
+                  <p className="font-medium">{selectedChild.parent_name || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Email</p>
+                  <p className="font-medium">{selectedChild.parent_email || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Date of Birth</p>
+                  <p className="font-medium">{selectedChild.date_of_birth || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">School</p>
+                  <p className="font-medium">{selectedChild.school_name || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Level</p>
+                  <p className="font-medium">Level {selectedChild.current_level || 1}</p>
+                </div>
+                <div>
+                  <p className="text-slate-500">Points</p>
+                  <p className="font-medium">⭐ {selectedChild.total_points || 0}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
