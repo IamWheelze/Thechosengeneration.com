@@ -580,17 +580,32 @@ export default function SignupPage() {
                   >
                     {generatedPIN}
                   </motion.div>
-                  <Button
-                    variant="outline"
-                    onClick={copyPIN}
-                    className="mt-4 rounded-xl border-2 border-amber-400 text-amber-700 hover:bg-amber-50"
-                  >
-                    {copied ? (
-                      <><Check className="w-5 h-5 mr-2 text-green-600" /> Copied!</>
-                    ) : (
-                      <><Copy className="w-5 h-5 mr-2" /> Copy PIN</>
-                    )}
-                  </Button>
+                  <div className="flex gap-2 justify-center mt-4">
+                    <Button
+                      variant="outline"
+                      onClick={copyPIN}
+                      className="rounded-xl border-2 border-amber-400 text-amber-700 hover:bg-amber-50"
+                    >
+                      {copied ? (
+                        <><Check className="w-5 h-5 mr-2 text-green-600" /> Copied!</>
+                      ) : (
+                        <><Copy className="w-5 h-5 mr-2" /> Copy PIN</>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const subject = encodeURIComponent(`The Chosen Generation - ${childData.firstName}'s Login PIN`)
+                        const body = encodeURIComponent(
+                          `Hello!\n\nYour child ${childData.firstName} ${childData.lastName} has been registered at The Chosen Generation Bible School.\n\nTheir secret login PIN is: ${generatedPIN}\n\nPlease keep this PIN safe! Your child will use it to log in and access their lessons.\n\nVisit: ${window.location.origin}/login\n\nBlessings,\nThe Chosen Generation Team`
+                        )
+                        window.location.href = `mailto:${user?.email}?subject=${subject}&body=${body}`
+                      }}
+                      className="rounded-xl border-2 border-blue-400 text-blue-700 hover:bg-blue-50"
+                    >
+                      <span className="mr-2">📧</span> Email PIN
+                    </Button>
+                  </div>
                 </div>
 
                 {/* What's next */}
@@ -605,12 +620,35 @@ export default function SignupPage() {
                   </div>
                 </div>
 
-                <Link href="/login">
-                  <Button className="w-full h-14 text-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-2xl shadow-lg">
-                    <Sparkles className="w-6 h-6 mr-2" />
-                    Go to Login
+                <div className="space-y-3">
+                  <Link href="/login">
+                    <Button className="w-full h-14 text-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-2xl shadow-lg">
+                      <Sparkles className="w-6 h-6 mr-2" />
+                      Go to Login
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setChildData({
+                        firstName: "",
+                        lastName: "",
+                        dateOfBirth: "",
+                        gender: "",
+                        schoolName: "",
+                        schoolGrade: "",
+                        medicalConditions: "",
+                        photoConsent: false,
+                      })
+                      setGeneratedPIN("")
+                      setStep("child-info")
+                    }}
+                    className="w-full h-12 text-base rounded-2xl border-2 border-purple-300 text-purple-700 hover:bg-purple-50"
+                  >
+                    <Baby className="w-5 h-5 mr-2" />
+                    Register Another Child
                   </Button>
-                </Link>
+                </div>
               </motion.div>
             )}
           </div>
