@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Chosen Generation - Children's Bible School</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.8;
+      color: #333;
+      background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #dc2626 100%);
+      color: white;
+      border-radius: 0 0 50px 50px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 40px rgba(234, 88, 12, 0.3);
+    }
+
+    .logo {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .header .tagline {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    .foundation-banner {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 25px;
+      padding: 15px 30px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50px;
+      display: inline-flex;
+    }
+
+    .foundation-item {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
+    .foundation-item::after {
+      content: " ";
+    }
+
+    /* Section Styles */
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      border-left: 5px solid #f59e0b;
+    }
+
+    .section.blue {
+      border-left-color: #3b82f6;
+    }
+
+    .section.green {
+      border-left-color: #10b981;
+    }
+
+    .section.purple {
+      border-left-color: #8b5cf6;
+    }
+
+    .section.pink {
+      border-left-color: #ec4899;
+    }
+
+    .section.red {
+      border-left-color: #ef4444;
+    }
+
+    .section h2 {
+      font-size: 1.8rem;
+      color: #1e293b;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section h2 .icon {
+      font-size: 2rem;
+    }
+
+    .section p {
+      color: #475569;
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+    }
+
+    /* Lists */
+    .styled-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .styled-list li {
+      padding: 12px 0 12px 35px;
+      position: relative;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .styled-list li:last-child {
+      border-bottom: none;
+    }
+
+    .styled-list li::before {
+      content: "✨";
+      position: absolute;
+      left: 0;
+      top: 12px;
+    }
+
+    /* Phase Cards */
+    .phases {
+      display: grid;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .phase-card {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 15px;
+      padding: 25px;
+      border: 2px solid #f59e0b;
+    }
+
+    .phase-card.active {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border-color: #10b981;
+    }
+
+    .phase-card.future {
+      background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+      border-color: #6366f1;
+    }
+
+    .phase-card h3 {
+      font-size: 1.3rem;
+      color: #1e293b;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phase-number {
+      width: 35px;
+      height: 35px;
+      background: #f59e0b;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .phase-card.active .phase-number {
+      background: #10b981;
+    }
+
+    .phase-card.future .phase-number {
+      background: #6366f1;
+    }
+
+    /* Program Cards */
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .program-card {
+      background: #f8fafc;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .program-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .program-card .emoji {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .program-card h4 {
+      font-size: 1.2rem;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .program-card p {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    /* Values Grid */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .value-card {
+      text-align: center;
+      padding: 30px 20px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+    }
+
+    .value-card:nth-child(2) {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    }
+
+    .value-card:nth-child(3) {
+      background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    }
+
+    .value-card .emoji {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .value-card h4 {
+      font-size: 1.3rem;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .value-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    /* Registration Info */
+    .registration-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 3px solid #f59e0b;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .registration-box h3 {
+      font-size: 1.5rem;
+      color: #92400e;
+      margin-bottom: 15px;
+    }
+
+    .registration-box .steps {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin: 25px 0;
+    }
+
+    .registration-box .step {
+      text-align: center;
+    }
+
+    .registration-box .step-number {
+      width: 50px;
+      height: 50px;
+      background: #f59e0b;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0 auto 10px;
+    }
+
+    .registration-box .step p {
+      font-size: 0.95rem;
+      color: #78350f;
+      margin: 0;
+      max-width: 120px;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .contact-card {
+      background: #f8fafc;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .contact-card .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-card h4 {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 5px;
+    }
+
+    .contact-card p {
+      font-size: 1.1rem;
+      color: #1e293b;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #1e293b;
+      color: white;
+      border-radius: 50px 50px 0 0;
+      margin-top: 40px;
+    }
+
+    .footer h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    .footer .bible-verse {
+      font-style: italic;
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+      border-left: 4px solid #eab308;
+      padding: 20px 25px;
+      border-radius: 0 15px 15px 0;
+      margin: 20px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      color: #713f12;
+      font-weight: 500;
+    }
+
+    /* Table */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .info-table th,
+    .info-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .info-table th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #475569;
+      width: 30%;
+    }
+
+    .info-table td {
+      color: #1e293b;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .foundation-banner {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 25px;
+      }
+
+      .registration-box .steps {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .header {
+        border-radius: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .section {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+      }
+
+      .footer {
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">✨📖✨</div>
+    <h1>The Chosen Generation</h1>
+    <p class="tagline">Children's Bible School</p>
+    <div class="foundation-banner">
+      <span class="foundation-item">FAMILY</span>
+      <span class="foundation-item">IDENTITY</span>
+      <span class="foundation-item">PURPOSE</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- About Us -->
+    <section class="section">
+      <h2><span class="icon">🌟</span> About Us</h2>
+      <p>
+        <strong>The Chosen Generation</strong> is a Children's Bible School dedicated to nurturing the spiritual growth of children through engaging, age-appropriate Bible education. We believe every child is uniquely created by God with a special purpose, and our mission is to help them discover their identity in Christ.
+      </p>
+      <p>
+        Our program is built on three foundational pillars: <strong>Family</strong> - creating a supportive community where children feel loved and valued; <strong>Identity</strong> - helping children understand who they are in Christ; and <strong>Purpose</strong> - equipping them to fulfill God's unique calling for their lives.
+      </p>
+      <div class="highlight-box">
+        <p>"Train up a child in the way he should go: and when he is old, he will not depart from it." - Proverbs 22:6</p>
+      </div>
+    </section>
+
+    <!-- Our Vision -->
+    <section class="section blue">
+      <h2><span class="icon">👁️</span> Our Vision</h2>
+      <p>
+        To raise a generation of children who are deeply rooted in God's Word, confident in their identity as children of God, and equipped to impact their families, communities, and the world for Christ.
+      </p>
+      <p>
+        We envision children who not only know the Bible but live it out daily - young disciples who understand their worth, walk in purpose, and become leaders in their generation.
+      </p>
+    </section>
+
+    <!-- Our Mission -->
+    <section class="section green">
+      <h2><span class="icon">🎯</span> Our Mission</h2>
+      <p>
+        To provide a fun, safe, and spiritually enriching environment where children can:
+      </p>
+      <ul class="styled-list">
+        <li>Learn and memorize God's Word through interactive lessons and activities</li>
+        <li>Develop a personal relationship with Jesus Christ</li>
+        <li>Build godly character and Christian values</li>
+        <li>Discover their God-given talents and purpose</li>
+        <li>Form meaningful friendships with other believers</li>
+        <li>Grow in prayer and worship</li>
+      </ul>
+    </section>
+
+    <!-- Core Values (FAMILY, IDENTITY, PURPOSE) -->
+    <section class="section purple">
+      <h2><span class="icon">💎</span> Our Foundation</h2>
+      <p>Everything we do is built upon three core values:</p>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="emoji">👨‍👩‍👧‍👦</div>
+          <h4>FAMILY</h4>
+          <p>Creating a loving community where every child belongs and feels valued as part of God's family.</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">🪞</div>
+          <h4>IDENTITY</h4>
+          <p>Helping children understand who they are in Christ - loved, chosen, and wonderfully made.</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">🎯</div>
+          <h4>PURPOSE</h4>
+          <p>Equipping children to discover and walk in God's unique plan and calling for their lives.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Approach / Phases -->
+    <section class="section pink">
+      <h2><span class="icon">📋</span> Our Approach</h2>
+      <p>
+        We follow a gradual, intentional approach to ensure children and families are properly introduced to our ministry and prepared for deeper spiritual growth.
+      </p>
+
+      <div class="phases">
+        <div class="phase-card active">
+          <h3><span class="phase-number">1</span> Monthly Meetings (Introduction Phase)</h3>
+          <p>
+            <strong>We start here!</strong> Our journey begins with monthly gatherings where we introduce ourselves to the children and their families. These meetings are designed to be fun, engaging, and welcoming, allowing children to get comfortable with our team and environment.
+          </p>
+          <ul class="styled-list">
+            <li>Fun introductory activities and games</li>
+            <li>Simple Bible stories and songs</li>
+            <li>Meet and greet with teachers and volunteers</li>
+            <li>Parent orientation and Q&A sessions</li>
+            <li>Registration for ongoing participation</li>
+          </ul>
+        </div>
+
+        <div class="phase-card">
+          <h3><span class="phase-number">2</span> Transition Period (2-3 Meetings)</h3>
+          <p>
+            After the initial meetings, we spend time getting to know each child personally. During this phase, we collect important information and build relationships.
+          </p>
+          <ul class="styled-list">
+            <li>Collect bio data and emergency contact information</li>
+            <li>Gather parent/guardian details</li>
+            <li>Assess each child's spiritual background</li>
+            <li>Introduce foundational Bible concepts</li>
+            <li>Prepare children for Foundation School enrollment</li>
+          </ul>
+        </div>
+
+        <div class="phase-card future">
+          <h3><span class="phase-number">3</span> Foundation School (Ongoing Program)</h3>
+          <p>
+            After 2-3 successful monthly meetings and proper registration, children transition into our structured Foundation School program with regular weekly/bi-weekly sessions.
+          </p>
+          <ul class="styled-list">
+            <li>Structured curriculum with levels (FS1, FS2, FS3)</li>
+            <li>Weekly lessons with memory verses</li>
+            <li>Points and badge reward system</li>
+            <li>Progress tracking for parents</li>
+            <li>Special events and graduation ceremonies</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registration Process -->
+    <section class="section">
+      <h2><span class="icon">📝</span> Registration Process</h2>
+      <p>
+        We've created a simple digital platform to make registration easy for parents. Here's how it works:
+      </p>
+
+      <div class="registration-box">
+        <h3>How to Register Your Child</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <p>Sign up with Google on our website</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <p>Enter your child's information</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <p>Receive a unique 4-digit PIN</p>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <p>Your child uses PIN to access their portal</p>
+          </div>
+        </div>
+        <p style="font-size: 0.9rem; color: #78350f;">
+          <strong>Note:</strong> Parents can register multiple children and track each child's progress through the parent portal.
+        </p>
+      </div>
+
+      <h3 style="margin-top: 30px; margin-bottom: 15px; color: #1e293b;">Information We Collect</h3>
+      <table class="info-table">
+        <tr>
+          <th>Parent Information</th>
+          <td>Full name, email address, phone number, church name (optional)</td>
+        </tr>
+        <tr>
+          <th>Child Information</th>
+          <td>Full name, date of birth, gender, school name, grade level</td>
+        </tr>
+        <tr>
+          <th>Medical Information</th>
+          <td>Any allergies or medical conditions we should be aware of</td>
+        </tr>
+        <tr>
+          <th>Consent</th>
+          <td>Photo/video consent for ministry activities</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Programs & Activities -->
+    <section class="section red">
+      <h2><span class="icon">🎨</span> Programs & Activities</h2>
+      <p>Our children participate in a variety of engaging activities designed to make learning about God fun and memorable:</p>
+
+      <div class="program-grid">
+        <div class="program-card">
+          <div class="emoji">📖</div>
+          <h4>Bible Lessons</h4>
+          <p>Interactive, age-appropriate lessons that bring Scripture to life</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🎵</div>
+          <h4>Worship & Songs</h4>
+          <p>Joyful praise and worship with child-friendly songs</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🙏</div>
+          <h4>Prayer Time</h4>
+          <p>Teaching children to communicate with God through prayer</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">📝</div>
+          <h4>Memory Verses</h4>
+          <p>Hiding God's Word in their hearts through memorization</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🎭</div>
+          <h4>Drama & Skits</h4>
+          <p>Acting out Bible stories for deeper understanding</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🎮</div>
+          <h4>Games & Activities</h4>
+          <p>Fun games that reinforce spiritual lessons</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🏆</div>
+          <h4>Awards & Recognition</h4>
+          <p>Celebrating achievements with points and badges</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🎉</div>
+          <h4>Special Events</h4>
+          <p>Holiday celebrations, graduations, and family days</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Foundation School Levels -->
+    <section class="section blue">
+      <h2><span class="icon">📚</span> Foundation School Curriculum</h2>
+      <p>Our structured curriculum is divided into progressive levels:</p>
+
+      <table class="info-table">
+        <tr>
+          <th>Foundation School 1 (FS1)</th>
+          <td>Ages 4-6: Basic Bible stories, simple prayers, learning about Jesus' love, introductory worship</td>
+        </tr>
+        <tr>
+          <th>Foundation School 2 (FS2)</th>
+          <td>Ages 7-9: Deeper Bible study, memory verses, understanding salvation, prayer development</td>
+        </tr>
+        <tr>
+          <th>Foundation School 3 (FS3)</th>
+          <td>Ages 10-12: Character building, leadership skills, personal devotion, service projects</td>
+        </tr>
+      </table>
+
+      <div class="highlight-box" style="margin-top: 25px;">
+        <p><strong>Progress Tracking:</strong> Children earn points for attendance, completing tasks, memorizing verses, and good behavior. Parents can track progress through the parent portal.</p>
+      </div>
+    </section>
+
+    <!-- Digital Platform Features -->
+    <section class="section green">
+      <h2><span class="icon">💻</span> Our Digital Platform</h2>
+      <p>We've built a modern, child-friendly digital platform to enhance the learning experience:</p>
+
+      <ul class="styled-list">
+        <li><strong>Parent Portal:</strong> Track your children's progress, view their points, see upcoming sessions, and communicate with teachers</li>
+        <li><strong>Child Dashboard:</strong> Fun, colorful interface where children can check in, view tasks, see their badges, and track their journey</li>
+        <li><strong>Teacher Portal:</strong> Teachers can award points, track attendance, and manage their classes</li>
+        <li><strong>Admin Portal:</strong> Full management of all children, classes, and curriculum</li>
+        <li><strong>Secure PIN Login:</strong> Each child gets a unique 4-digit PIN for easy, secure access</li>
+        <li><strong>Points & Badges:</strong> Gamified reward system to motivate and celebrate achievements</li>
+      </ul>
+    </section>
+
+    <!-- Safety & Safeguarding -->
+    <section class="section purple">
+      <h2><span class="icon">🛡️</span> Safety & Safeguarding</h2>
+      <p>The safety of every child is our highest priority. We maintain strict safeguarding policies:</p>
+
+      <ul class="styled-list">
+        <li>All volunteers and teachers undergo background checks</li>
+        <li>Secure check-in/check-out procedures using unique PINs</li>
+        <li>Adult-to-child ratios maintained at all times</li>
+        <li>Medical information and emergency contacts on file</li>
+        <li>Photo/video consent obtained from parents</li>
+        <li>Clear reporting procedures for any concerns</li>
+        <li>Regular safeguarding training for all team members</li>
+      </ul>
+    </section>
+
+    <!-- Get Involved -->
+    <section class="section">
+      <h2><span class="icon">🤝</span> Get Involved</h2>
+      <p>There are many ways to be part of The Chosen Generation ministry:</p>
+
+      <div class="program-grid">
+        <div class="program-card">
+          <div class="emoji">👶</div>
+          <h4>Register Your Child</h4>
+          <p>Sign up for our monthly meetings and watch your child grow in faith</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🙋</div>
+          <h4>Volunteer</h4>
+          <p>Join our team of dedicated teachers and helpers</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">🙏</div>
+          <h4>Pray</h4>
+          <p>Partner with us in prayer for the children and ministry</p>
+        </div>
+        <div class="program-card">
+          <div class="emoji">💝</div>
+          <h4>Support</h4>
+          <p>Help provide resources and materials for our programs</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="section pink">
+      <h2><span class="icon">📞</span> Contact Us</h2>
+      <p>We'd love to hear from you! Reach out with any questions about our programs.</p>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="emoji">🌐</div>
+          <h4>Website</h4>
+          <p>thechosengeneration.com</p>
+        </div>
+        <div class="contact-card">
+          <div class="emoji">📧</div>
+          <h4>Email</h4>
+          <p>info@thechosengeneration.com</p>
+        </div>
+        <div class="contact-card">
+          <div class="emoji">📍</div>
+          <h4>Location</h4>
+          <p>Various locations - contact for details</p>
+        </div>
+        <div class="contact-card">
+          <div class="emoji">📅</div>
+          <h4>Meetings</h4>
+          <p>Monthly (transitioning to weekly)</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <h3>The Chosen Generation</h3>
+    <p>Children's Bible School</p>
+    <p style="margin-top: 5px;">FAMILY | IDENTITY | PURPOSE</p>
+    <div class="bible-verse">
+      <p>"But you are a chosen generation, a royal priesthood, a holy nation, His own special people, that you may proclaim the praises of Him who called you out of darkness into His marvelous light."</p>
+      <p style="margin-top: 10px;"><strong>- 1 Peter 2:9 (NKJV)</strong></p>
+    </div>
+    <p style="margin-top: 25px; font-size: 0.85rem; opacity: 0.7;">
+      &copy; 2026 The Chosen Generation. All rights reserved.
+    </p>
+  </footer>
+
+</body>
+</html>

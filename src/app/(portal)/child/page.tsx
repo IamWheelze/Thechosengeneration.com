@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -9,7 +11,6 @@ import {
   BookOpen,
   CheckCircle2,
   Trophy,
-  Calendar,
   Star,
   ChevronRight,
   Flame,
@@ -20,81 +21,139 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { createClient } from "@/lib/supabase/client"
 
-interface ChildSession {
+interface ChildData {
   id: string
-  firstName: string
-  lastName?: string
-  displayName: string
-  level: number
+  first_name: string
+  last_name: string
+  display_name: string
+  total_points: number
+  current_level: number
+  gender: string
+}
+
+interface Task {
+  id: string
+  title: string
+  type: string
+  completed: boolean
   points: number
 }
 
-// Demo tasks - in production these would come from the database
-const defaultTasks = [
-  { id: "1", title: "Morning Prayer", type: "checkbox", completed: false, points: 10 },
-  { id: "2", title: "Read John Chapter 3", type: "checkbox", completed: false, points: 15 },
-  { id: "3", title: "Memory Verse: John 3:16", type: "teacher_approved", completed: false, points: 20 },
-  { id: "4", title: "Prayer Reflection", type: "short_answer", completed: false, points: 15 },
-  { id: "5", title: "Worship Practice", type: "checkbox", completed: false, points: 10 },
-]
-
-const journeyNodes = [
-  { id: 1, title: "Day 1", status: "current" },
-  { id: 2, title: "Day 2", status: "locked" },
-  { id: 3, title: "Day 3", status: "locked" },
-  { id: 4, title: "Day 4", status: "locked" },
-  { id: 5, title: "Day 5", status: "locked" },
-  { id: 6, title: "Day 6", status: "locked" },
-  { id: 7, title: "Day 7", status: "locked" },
-]
-
-const badges = [
-  { emoji: "🙏", label: "Prayer Warrior", date: "New!" },
-  { emoji: "📖", label: "Bible Reader", date: "Earn this!" },
-]
-
 export default function ChildDashboard() {
   const router = useRouter()
-  const [childData, setChildData] = useState<ChildSession | null>(null)
+  const supabase = createClient()
+
+  const [childData, setChildData] = useState<ChildData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showConfetti, setShowConfetti] = useState(false)
-  const [tasks, setTasks] = useState(defaultTasks)
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: "1", title: "Morning Prayer", type: "checkbox", completed: false, points: 10 },
+    { id: "2", title: "Read John Chapter 3", type: "checkbox", completed: false, points: 15 },
+    { id: "3", title: "Memory Verse: John 3:16", type: "teacher_approved", completed: false, points: 20 },
+    { id: "4", title: "Prayer Reflection", type: "short_answer", completed: false, points: 15 },
+    { id: "5", title: "Worship Practice", type: "checkbox", completed: false, points: 10 },
+  ])
   const [checkins, setCheckins] = useState({ prayer: false, attendance: true })
 
-  // Load child data from session storage
   useEffect(() => {
+    loadChildData()
+  }, [])
+
+  const loadChildData = async () => {
     const sessionData = sessionStorage.getItem("childSession")
-    if (sessionData) {
-      try {
-        const parsed = JSON.parse(sessionData)
-        setChildData(parsed)
-      } catch {
-        router.push("/login")
-      }
-    } else {
+    if (!sessionData) {
       router.push("/login")
+      return
     }
-    setIsLoading(false)
-  }, [router])
+
+    try {
+      const parsed = JSON.parse(sessionData)
+
+      const { data: child, error } = await supabase
+        .from("children")
+        .select("*")
+        .eq("id", parsed.id)
+        .single()
+
+      if (error || !child) {
+        router.push("/login")
+        return
+      }
+
+      setChildData({
+        id: child.id,
+        first_name: child.first_name,
+        last_name: child.last_name,
+        display_name: child.display_name,
+        total_points: child.total_points || 0,
+        current_level: child.current_level || 1,
+        gender: child.gender,
+      })
+
+      sessionStorage.setItem("childSession", JSON.stringify({
+        id: child.id,
+        firstName: child.first_name,
+        lastName: child.last_name,
+        displayName: child.display_name,
+        level: child.current_level || 1,
+        points: child.total_points || 0,
+      }))
+    } catch {
+      router.push("/login")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const completedTasks = tasks.filter((t) => t.completed).length
   const totalTasks = tasks.length
   const weeklyProgress = Math.round((completedTasks / totalTasks) * 100)
 
-  const handleTaskComplete = (taskId: string) => {
-    setTasks(
-      tasks.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t))
-    )
-    setShowConfetti(true)
-    setTimeout(() => setShowConfetti(false), 2000)
+  const handleTaskComplete = async (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId)
+    if (!task || task.completed || !childData) return
+
+    setTasks(tasks.map((t) => (t.id === taskId ? { ...t, completed: true } : t)))
+
+    const newPoints = childData.total_points + task.points
+    const newLevel = Math.floor(newPoints / 100) + 1
+
+    const { error } = await supabase
+      .from("children")
+      .update({
+        total_points: newPoints,
+        current_level: newLevel
+      })
+      .eq("id", childData.id)
+
+    if (!error) {
+      setChildData({ ...childData, total_points: newPoints, current_level: newLevel })
+      setShowConfetti(true)
+      setTimeout(() => setShowConfetti(false), 2000)
+    }
   }
 
-  const handlePrayerCheckin = () => {
-    if (!checkins.prayer) {
-      setCheckins({ ...checkins, prayer: true })
+  const handlePrayerCheckin = async () => {
+    if (checkins.prayer || !childData) return
+
+    setCheckins({ ...checkins, prayer: true })
+
+    const newPoints = childData.total_points + 5
+    const newLevel = Math.floor(newPoints / 100) + 1
+
+    const { error } = await supabase
+      .from("children")
+      .update({
+        total_points: newPoints,
+        current_level: newLevel
+      })
+      .eq("id", childData.id)
+
+    if (!error) {
+      setChildData({ ...childData, total_points: newPoints, current_level: newLevel })
       setShowConfetti(true)
       setTimeout(() => setShowConfetti(false), 2000)
     }
@@ -109,9 +168,24 @@ export default function ChildDashboard() {
     return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
   }
 
+  const journeyNodes = [
+    { id: 1, title: "Day 1", status: completedTasks >= 1 ? "completed" : completedTasks === 0 ? "current" : "locked" },
+    { id: 2, title: "Day 2", status: completedTasks >= 2 ? "completed" : completedTasks === 1 ? "current" : "locked" },
+    { id: 3, title: "Day 3", status: completedTasks >= 3 ? "completed" : completedTasks === 2 ? "current" : "locked" },
+    { id: 4, title: "Day 4", status: completedTasks >= 4 ? "completed" : completedTasks === 3 ? "current" : "locked" },
+    { id: 5, title: "Day 5", status: completedTasks >= 5 ? "completed" : completedTasks === 4 ? "current" : "locked" },
+  ]
+
+  const badges = [
+    { emoji: "🙏", label: "Prayer Warrior", earned: checkins.prayer },
+    { emoji: "📖", label: "Bible Reader", earned: completedTasks >= 2 },
+    { emoji: "⭐", label: "Star Student", earned: (childData?.total_points || 0) >= 50 },
+    { emoji: "🏆", label: "Champion", earned: (childData?.total_points || 0) >= 100 },
+  ]
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-warm flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50 flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -129,17 +203,15 @@ export default function ChildDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-pink-50">
-      {/* Animated background */}
       <div className="fixed inset-0 bg-pattern-stars opacity-20 pointer-events-none" />
 
-      {/* Confetti effect */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              initial={{ y: -20, x: Math.random() * window.innerWidth, opacity: 1 }}
-              animate={{ y: window.innerHeight + 20, opacity: 0 }}
+              initial={{ y: -20, x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 400), opacity: 1 }}
+              animate={{ y: (typeof window !== 'undefined' ? window.innerHeight : 800) + 20, opacity: 0 }}
               transition={{ duration: 2, delay: Math.random() * 0.5 }}
               className="absolute text-2xl"
             >
@@ -157,20 +229,20 @@ export default function ChildDashboard() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Avatar className="w-12 h-12 border-2 border-amber-300">
                   <AvatarFallback className="bg-gradient-to-br from-amber-400 to-orange-500 text-white text-lg font-bold">
-                    {getInitials(childData.displayName)}
+                    {getInitials(childData.display_name)}
                   </AvatarFallback>
                 </Avatar>
               </motion.div>
               <div>
-                <h1 className="font-bold text-lg text-slate-800">Hi, {childData.firstName}! 👋</h1>
+                <h1 className="font-bold text-lg text-slate-800">Hi, {childData.first_name}! 👋</h1>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-xs border-amber-300 text-amber-700">
                     <Flame className="w-3 h-3 mr-1 text-orange-500" />
-                    Level {childData.level}
+                    Level {childData.current_level}
                   </Badge>
                   <Badge variant="outline" className="text-xs border-amber-300 text-amber-700">
                     <Star className="w-3 h-3 mr-1 text-amber-500" />
-                    {childData.points} pts
+                    {childData.total_points} pts
                   </Badge>
                 </div>
               </div>
@@ -211,7 +283,7 @@ export default function ChildDashboard() {
                         <Star className="w-6 h-6" />
                       </div>
                       <div>
-                        <span className="font-bold text-2xl">{childData.points}</span>
+                        <span className="font-bold text-2xl">{childData.total_points}</span>
                         <p className="text-xs text-white/80">Points</p>
                       </div>
                     </div>
@@ -332,7 +404,7 @@ export default function ChildDashboard() {
                   </motion.div>
                   <h3 className="font-semibold text-slate-800">Prayer</h3>
                   <p className="text-xs text-slate-500 mt-1">
-                    {checkins.prayer ? "Done for today! 🎉" : "Tap when done"}
+                    {checkins.prayer ? "Done for today! +5 pts 🎉" : "Tap when done (+5 pts)"}
                   </p>
                 </CardContent>
               </Card>
@@ -385,7 +457,7 @@ export default function ChildDashboard() {
                   className={`cursor-pointer transition-all bg-white/80 backdrop-blur hover:shadow-md ${
                     task.completed ? "bg-green-50 border-green-200" : ""
                   }`}
-                  onClick={() => task.type === "checkbox" && handleTaskComplete(task.id)}
+                  onClick={() => task.type === "checkbox" && !task.completed && handleTaskComplete(task.id)}
                 >
                   <CardContent className="py-4 px-4">
                     <div className="flex items-center justify-between">
@@ -451,17 +523,23 @@ export default function ChildDashboard() {
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
               >
-                <Card className="min-w-[130px] text-center bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 hover:shadow-lg transition-shadow">
+                <Card className={`min-w-[130px] text-center border-amber-200 hover:shadow-lg transition-shadow ${
+                  badge.earned
+                    ? "bg-gradient-to-br from-amber-50 to-orange-50"
+                    : "bg-slate-100 opacity-60"
+                }`}>
                   <CardContent className="pt-4 pb-4">
                     <motion.div
-                      animate={{ y: [0, -5, 0] }}
+                      animate={badge.earned ? { y: [0, -5, 0] } : {}}
                       transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                      className="text-4xl mb-2"
+                      className={`text-4xl mb-2 ${!badge.earned && "grayscale"}`}
                     >
                       {badge.emoji}
                     </motion.div>
                     <h4 className="font-semibold text-slate-800 text-sm">{badge.label}</h4>
-                    <p className="text-xs text-amber-600 font-medium mt-1">{badge.date}</p>
+                    <p className={`text-xs font-medium mt-1 ${badge.earned ? "text-amber-600" : "text-slate-400"}`}>
+                      {badge.earned ? "Earned!" : "Keep going!"}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
